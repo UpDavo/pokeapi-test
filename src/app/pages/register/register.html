@@ -1,0 +1,118 @@
+<div class="flex min-h-screen items-center justify-center bg-black text-white px-6">
+  <!-- Contenedor principal: 2 columnas -->
+  <div class="flex flex-col md:flex-row items-center gap-16">
+    <!-- Card -->
+    <div class="card bg-stone-700 w-full max-w-md md:w-[32rem] mx-auto shadow-xl rounded-xl">
+      <div class="card-body">
+        <h2 class="text-center text-xl font-bold mb-4">Registro</h2>
+
+        <!-- Si aún no se ha registrado -->
+        <form
+          *ngIf="!registered"
+          [formGroup]="form"
+          (ngSubmit)="submit()"
+          class="grid grid-cols-1 md:grid-cols-2 gap-3"
+        >
+          <input
+            type="text"
+            formControlName="firstName"
+            placeholder="Nombre *"
+            class="input input-bordered rounded-full col-span-1"
+          />
+          <input
+            type="text"
+            formControlName="lastName"
+            placeholder="Apellido *"
+            class="input input-bordered rounded-full col-span-1"
+          />
+
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="Correo *"
+            class="input input-bordered rounded-full col-span-1"
+          />
+          <input
+            type="text"
+            formControlName="phone"
+            placeholder="Teléfono *"
+            class="input input-bordered rounded-full col-span-1"
+          />
+
+          <select formControlName="city" class="select select-bordered rounded-full col-span-1">
+            <option disabled selected>Ciudad *</option>
+            <option>Quito</option>
+            <option>Guayaquil</option>
+            <option>Cuenca</option>
+          </select>
+          <select formControlName="referral" class="select select-bordered rounded-full col-span-1">
+            <option disabled selected>¿Alguien te refirió? *</option>
+            <option>Sí</option>
+            <option>No</option>
+          </select>
+
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="Contraseña *"
+            class="input input-bordered rounded-full col-span-1"
+          />
+          <input
+            type="password"
+            formControlName="confirmPassword"
+            placeholder="Confirma Contraseña *"
+            class="input input-bordered rounded-full col-span-1"
+          />
+
+          <!-- Mensaje único de errores al final de los campos -->
+          <div
+            *ngIf="form.invalid && (form.touched || form.dirty)"
+            class="col-span-1 md:col-span-2 text-red-500 text-sm"
+          >
+            <p class="font-semibold">* Faltan campos obligatorios:</p>
+            <ul class="list-disc list-inside ml-4">
+              <li *ngIf="form.get('firstName')?.invalid">Nombre</li>
+              <li *ngIf="form.get('lastName')?.invalid">Apellido</li>
+              <li *ngIf="form.get('email')?.invalid">Correo</li>
+              <li *ngIf="form.get('phone')?.invalid">Teléfono</li>
+              <li *ngIf="form.get('city')?.invalid">Ciudad</li>
+              <li *ngIf="form.get('referral')?.invalid">Referencia</li>
+              <li *ngIf="form.get('password')?.invalid">Contraseña</li>
+              <li *ngIf="form.get('confirmPassword')?.invalid">Confirmar contraseña</li>
+            </ul>
+          </div>
+
+          <!-- Botón -->
+          <button
+            type="submit"
+            [disabled]="form.invalid"
+            class="btn btn-primary rounded-full col-span-1 md:col-span-2 mt-2"
+          >
+            Registrarse
+          </button>
+
+          <div class="text-center text-sm mt-3 col-span-1 md:col-span-2">
+            Si ya tienes una cuenta
+            <a routerLink="/login" class="link link-hover">Inicia sesión aquí</a>.
+          </div>
+        </form>
+
+        <!-- Mensaje de confirmación -->
+        <div *ngIf="registered" class="text-center space-y-4">
+          <h2 class="text-2xl font-bold">¡Gracias por registrarte!</h2>
+          <p>
+            La confirmación llegará a tu correo electrónico.<br />
+            Una vez confirmado, podrás iniciar sesión.
+          </p>
+          <a routerLink="/login" class="btn btn-primary rounded-full">Ir al Login</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Texto lateral -->
+    <div class="hidden md:flex flex-col items-start text-left">
+      <p class="text-lg">Bienvenido a</p>
+      <h1 class="text-4xl font-bold">PokéTrainer</h1>
+    </div>
+  </div>
+</div>
