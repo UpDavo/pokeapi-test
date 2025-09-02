@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, ChangeDetectorRef, NgZone } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { interval, takeUntil, Subject } from 'rxjs';
 import { PokemonService } from '../../services/pokemon.service';
@@ -6,6 +6,8 @@ import { CapturedPokemon, PokemonMetrics } from '../../interfaces/pokemon.interf
 import { StatCard } from './components/stat-card/stat-card';
 import { RecomendedPokemonCard } from './components/recomended-pokemon-card/recomended-pokemon-card';
 import { MyPokemonCard } from './components/my-pokemon-card/my-pokemon-card';
+
+const TIME_LEFT = 10 * 60 * 1000;
 
 @Component({
   selector: 'app-home',
@@ -16,6 +18,7 @@ import { MyPokemonCard } from './components/my-pokemon-card/my-pokemon-card';
 export class Home implements OnInit, OnDestroy {
   private pokemonService = inject(PokemonService);
   private cdr = inject(ChangeDetectorRef);
+  private ngZone = inject(NgZone);
   private destroy$ = new Subject<void>();
 
   // Estados de carga independientes
@@ -45,10 +48,12 @@ export class Home implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadAll();
 
-    // Rotar recomendados cada 10 min
-    interval(10 * 60 * 1000)
+    interval(TIME_LEFT)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.updateRecommendations());
+      .subscribe(async () => {
+        console.log('Refrescando recomendaciones automáticamente...');
+        await this.updateRecommendations();
+      });
   }
 
   ngOnDestroy(): void {
@@ -58,7 +63,6 @@ export class Home implements OnInit, OnDestroy {
 
   /** ====== Carga principal ====== */
   private loadAll(): void {
-    // Iniciar todas las cargas de forma independiente
     this.loadMetricsAsync();
     this.loadRecentCapturesAsync();
     this.loadRecommendationsAsync();
@@ -67,7 +71,7 @@ export class Home implements OnInit, OnDestroy {
   /** ====== Carga asíncrona de métricas ====== */
   private async loadMetricsAsync(): Promise<void> {
     this.isLoadingMetrics = true;
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
 
     try {
       const metrics = await this.pokemonService.computeMetrics();
@@ -82,48 +86,46 @@ export class Home implements OnInit, OnDestroy {
       console.error('Error al cargar métricas:', error);
     } finally {
       this.isLoadingMetrics = false;
-      this.cdr.detectChanges();
+      this.cdr.markForCheck();
     }
   }
 
   /** ====== Carga asíncrona de capturas recientes ====== */
   private async loadRecentCapturesAsync(): Promise<void> {
     this.isLoadingRecentCaptures = true;
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
 
     try {
-      // Simular un pequeño delay para mostrar la carga asíncrona
-      await new Promise((resolve) => setTimeout(resolve, 300));
       this.recentCaptures = this.pokemonService.getRecentCaptures(4);
       console.log('Capturas recientes cargadas:', this.recentCaptures.length);
     } catch (error) {
       console.error('Error al cargar capturas recientes:', error);
     } finally {
       this.isLoadingRecentCaptures = false;
-      this.cdr.detectChanges();
+      this.cdr.markForCheck();
     }
   }
 
   /** ====== Carga asíncrona de recomendaciones ====== */
   private async loadRecommendationsAsync(): Promise<void> {
     this.isLoadingRecommendations = true;
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
 
     try {
-      // Simular un pequeño delay para mostrar la carga asíncrona
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      this.updateRecommendations();
+      this.recommended = await this.pokemonService.getRandomTop100Recommendations();
     } catch (error) {
       console.error('Error al cargar recomendaciones:', error);
     } finally {
-      this.isLoadingRecommendations = false;
-      this.cdr.detectChanges();
+      this.ngZone.run(() => {
+        this.isLoadingRecommendations = false;
+        this.cdr.markForCheck();
+      });
     }
   }
 
   /** ====== Recomendaciones ====== */
-  private updateRecommendations(): void {
-    this.recommended = this.pokemonService.getRandomTop100Recommendations();
+  private async updateRecommendations(): Promise<void> {
+    await this.loadRecommendationsAsync();
   }
 
   /** ====== Métodos públicos para interacción ====== */

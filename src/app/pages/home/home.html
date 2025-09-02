@@ -1,63 +1,65 @@
 <div class="space-y-8">
   <!-- Bienvenida -->
-  <h1 class="text-xl font-bold text-black">¡Bienvenido, Ash Ketchum!</h1>
+  <h1 class="text-xl font-bold text-black">{{ 'home.welcome' | translate }}</h1>
 
   <!-- Resumen -->
   <div class="border border-gray-200 rounded-xl p-4">
-    <h1 class="text-xl text-black font-bold mb-2">Resumen</h1>
+    <h1 class="text-xl text-black font-bold mb-2">{{ 'home.summary' | translate }}</h1>
 
     @if (isLoadingMetrics) {
     <div class="flex items-center justify-center py-8">
       <div class="text-center space-y-2">
         <span class="loading loading-spinner loading-md text-primary"></span>
-        <p class="text-sm text-gray-500">Cargando métricas...</p>
+        <p class="text-sm text-gray-500">{{ 'home.loadingMetrics' | translate }}</p>
       </div>
     </div>
     } @else {
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 md:grid-cols-4 gap-4">
       <app-stat-card
-        title="Pokémon Capturados"
+        [title]="'home.pokemonCaught' | translate"
         [value]="capturedCount"
-        [description]="'de ' + (pokedexTotal || 0) + ' disponibles'"
+        [description]="
+          ('home.of' | translate) + ' ' + (pokedexTotal || 0) + ' ' + ('home.available' | translate)
+        "
         format="number"
       >
       </app-stat-card>
 
       <app-stat-card
-        title="Pokédex"
+        [title]="'home.pokedex' | translate"
         [value]="pokedexPct"
-        description="de progreso"
+        [description]="'home.progress' | translate"
         format="percentage"
       >
       </app-stat-card>
 
       <app-stat-card
-        title="Nivel promedio"
+        [title]="'home.averageLevel' | translate"
         [value]="avgLevel || 0"
-        description="de la colección"
+        [description]="'home.collection' | translate"
         format="number"
       >
       </app-stat-card>
 
       <app-stat-card
-        title="Tipo favorito"
-        [value]="favoriteType || 'Sin datos'"
-        description="más coleccionados"
+        [title]="'home.favoriteType' | translate"
+        [value]="favoriteType || ('home.noData' | translate)"
+        [description]="'home.mostCollected' | translate"
       >
       </app-stat-card>
 
       <app-stat-card
-        title="Experiencia"
+        [title]="'home.experience' | translate"
         [value]="totalExp || 0"
-        description="puntos acumulados"
+        [description]="'home.accumulatedPoints' | translate"
         format="number"
       >
       </app-stat-card>
 
       <app-stat-card
-        title="Pokémon más fuerte"
-        [value]="strongest?.name || 'Ninguno'"
-        [description]="strongest ? strongest.atk + ' de poder total' : ''"
+        [title]="'home.strongestPokemon' | translate"
+        [value]="strongest?.name || ('home.none' | translate)"
+        [description]="strongest ? strongest.atk + ' ' + ('home.totalPower' | translate) : ''"
       >
       </app-stat-card>
     </div>
@@ -71,14 +73,14 @@
       <div class="card bg-white border border-gray-200">
         <div class="card-body">
           <div class="flex justify-between items-center mb-4">
-            <h2 class="font-bold text-lg text-black">Mis Pokemons</h2>
+            <h2 class="font-bold text-lg text-black">{{ 'home.myPokemons' | translate }}</h2>
           </div>
 
           @if (isLoadingRecentCaptures) {
           <div class="flex items-center justify-center py-8">
             <div class="text-center space-y-2">
               <span class="loading loading-spinner loading-md text-primary"></span>
-              <p class="text-sm text-gray-500">Cargando Pokémon...</p>
+              <p class="text-sm text-gray-500">{{ 'home.loadingPokemon' | translate }}</p>
             </div>
           </div>
           } @else { @if (recentCaptures.length > 0) {
@@ -88,12 +90,12 @@
             }
           </div>
           } @else {
-          <div class="opacity-70 text-sm text-black">No hay Pokémon capturados aún.</div>
+          <div class="opacity-70 text-sm text-black">{{ 'home.noPokemonCaught' | translate }}</div>
           } }
         </div>
       </div>
       <div class="flex justify-end mt-2">
-        <a class="link link-primary text-sm">Ver todos</a>
+        <a class="link link-primary text-sm">{{ 'home.viewAll' | translate }}</a>
       </div>
     </div>
 
@@ -102,14 +104,25 @@
       <div class="card bg-white border border-gray-200">
         <div class="card-body">
           <div class="flex justify-between items-center mb-4">
-            <h2 class="font-bold text-lg text-black">Recomendados</h2>
+            <h2 class="font-bold text-lg text-black">{{ 'home.recommended' | translate }}</h2>
+            <button
+              class="btn btn-sm btn-primary"
+              (click)="refreshRecommendations()"
+              [disabled]="isLoadingRecommendations"
+            >
+              @if (isLoadingRecommendations) {
+              <span class="loading loading-spinner loading-xs"></span>
+              } @else {
+              {{ 'home.refresh' | translate }}
+              }
+            </button>
           </div>
 
           @if (isLoadingRecommendations) {
           <div class="flex items-center justify-center py-8">
             <div class="text-center space-y-2">
               <span class="loading loading-spinner loading-md text-primary"></span>
-              <p class="text-sm text-gray-500">Cargando recomendaciones...</p>
+              <p class="text-sm text-gray-500">{{ 'home.loadingRecommendations' | translate }}</p>
             </div>
           </div>
           } @else { @if (recommended.length > 0) {
@@ -119,12 +132,12 @@
             }
           </div>
           } @else {
-          <div class="opacity-70 text-sm">Sin datos</div>
+          <div class="opacity-70 text-sm">{{ 'home.noData' | translate }}</div>
           } }
         </div>
       </div>
       <div class="flex justify-end mt-2">
-        <a class="link link-primary text-sm">Ver todos</a>
+        <a class="link link-primary text-sm">{{ 'home.viewAll' | translate }}</a>
       </div>
     </div>
   </div>

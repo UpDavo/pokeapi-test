@@ -12,6 +12,7 @@
   },
   "home": {
     "welcome": "Welcome, Ash Ketchum!",
+    "summary": "Summary",
     "pokemonCaught": "Caught Pokémon",
     "pokedex": "Pokédex",
     "averageLevel": "Average Level",
@@ -21,11 +22,19 @@
     "myPokemons": "My Pokémon",
     "recommended": "Recommended",
     "viewAll": "View All",
+    "refresh": "Refresh",
     "available": "available",
     "progress": "progress",
     "collection": "of collection",
     "mostCollected": "most collected",
     "accumulatedPoints": "accumulated points",
-    "totalPower": "total power"
+    "totalPower": "total power",
+    "noData": "No data",
+    "none": "None",
+    "noPokemonCaught": "No Pokémon caught yet.",
+    "loadingMetrics": "Loading metrics...",
+    "loadingPokemon": "Loading Pokémon...",
+    "loadingRecommendations": "Loading recommendations...",
+    "of": "of"
   }
 }

@@ -12,6 +12,7 @@
   },
   "home": {
     "welcome": "¡Bienvenido, Ash Ketchum!",
+    "summary": "Resumen",
     "pokemonCaught": "Pokémon Capturados",
     "pokedex": "Pokédex",
     "averageLevel": "Nivel promedio",
@@ -21,11 +22,19 @@
     "myPokemons": "Mis Pokemons",
     "recommended": "Recomendados",
     "viewAll": "Ver todos",
+    "refresh": "Refrescar",
     "available": "disponibles",
     "progress": "de progreso",
     "collection": "de la colección",
     "mostCollected": "más coleccionados",
     "accumulatedPoints": "puntos acumulados",
-    "totalPower": "de poder total"
+    "totalPower": "de poder total",
+    "noData": "Sin datos",
+    "none": "Ninguno",
+    "noPokemonCaught": "No hay Pokémon capturados aún.",
+    "loadingMetrics": "Cargando métricas...",
+    "loadingPokemon": "Cargando Pokémon...",
+    "loadingRecommendations": "Cargando recomendaciones...",
+    "of": "de"
   }
 }

@@ -306,73 +306,85 @@ export class PokemonService {
   }
 
   /**
-   * Obtiene 2 pokémon aleatorios fuertes como recomendaciones (sin caché)
+   * Obtiene los 2 pokémon más fuertes de forma aleatoria desde la API
    */
-  getRandomTop100Recommendations(): (CapturedPokemon & { bst: number })[] {
-    // Generar IDs aleatorios de pokémon conocidos como fuertes
-    const strongPokemonIds = [
-      150, // Mewtwo
-      144, // Articuno
-      145, // Zapdos
-      146, // Moltres
-      249, // Lugia
-      250, // Ho-Oh
-      382, // Kyogre
-      383, // Groudon
-      384, // Rayquaza
-      483, // Dialga
-      484, // Palkia
-      487, // Giratina
-      643, // Reshiram
-      644, // Zekrom
-      646, // Kyurem
-      716, // Xerneas
-      717, // Yveltal
-      718, // Zygarde
-      789, // Cosmog
-      790, // Cosmoem
-      791, // Solgaleo
-      792, // Lunala
-      800, // Necrozma
-      // Agregar algunos pseudo-legendarios y pokémon fuertes
-      149, // Dragonite
-      248, // Tyranitar
-      376, // Metagross
-      445, // Garchomp
-      700, // Sylveon
-      658, // Greninja
-      448, // Lucario
-      282, // Gardevoir
-      373, // Salamence
-      134, // Vaporeon
-      135, // Jolteon
-      136, // Flareon
-      196, // Espeon
-      197, // Umbreon
-      470, // Leafeon
-      471, // Glaceon
-    ];
+  async getRandomTop100Recommendations(): Promise<(CapturedPokemon & { bst: number })[]> {
+    try {
+      console.log('Obteniendo pokémon más fuertes desde la API...');
 
-    // Seleccionar 2 aleatorios
-    const shuffled = [...strongPokemonIds].sort(() => 0.5 - Math.random());
-    const selectedIds = shuffled.slice(0, 2);
+      // Obtener lista de pokémon (limitamos a 200 para no sobrecargar)
+      const pokemonListResponse = await firstValueFrom(
+        this.http.get<{ results: { name: string; url: string }[] }>(
+          `${POKEAPI_BASE}/pokemon?limit=200`
+        )
+      );
 
-    // Retornar pokémon simulados para evitar llamadas HTTP adicionales
-    return selectedIds.map(id => ({
-      id,
-      name: `Pokemon-${id}`,
-      level: Math.floor(Math.random() * 50) + 50, // Nivel alto
-      capturedAt: '',
-      region: null,
-      generation: null,
-      sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
-      atk: Math.floor(Math.random() * 50) + 100, // Stats altos
-      def: Math.floor(Math.random() * 50) + 80,
-      spd: Math.floor(Math.random() * 50) + 90,
-      types: ['normal'], // Tipo genérico
-      baseExperience: 300,
-      bst: Math.floor(Math.random() * 100) + 500, // BST alto
-    }));
+      const pokemons = pokemonListResponse.results;
+
+      // Seleccionar 20 pokémon aleatorios para evaluar (para optimizar las llamadas)
+      const randomPokemons = this.getRandomSelection(pokemons, 20);
+
+      // Obtener detalles y calcular BST
+      const pokemonDetails = await firstValueFrom(
+        from(randomPokemons).pipe(
+          mergeMap(
+            (pokemon) =>
+              this.http.get<PokeApiPokemonDetail>(pokemon.url).pipe(
+                map((detail) => {
+                  const getStat = (name: StatName) =>
+                    detail.stats.find((s) => s.stat.name === name)?.base_stat ?? 0;
+
+                  const bst = detail.stats.reduce((sum, stat) => sum + stat.base_stat, 0);
+                  const atk = getStat('attack');
+                  const def = getStat('defense');
+                  const spd = getStat('speed');
+                  const types = detail.types?.map((t) => t.type.name) ?? [];
+                  const sprite =
+                    detail.sprites?.other?.['official-artwork']?.front_default ||
+                    detail.sprites?.front_default ||
+                    '';
+
+                  return {
+                    id: detail.id,
+                    name: detail.name,
+                    level: Math.floor(Math.random() * 30) + 70, // Nivel alto 70-100
+                    capturedAt: '',
+                    region: null,
+                    generation: null,
+                    sprite,
+                    atk,
+                    def,
+                    spd,
+                    types,
+                    baseExperience: detail.base_experience ?? 0,
+                    bst,
+                  };
+                }),
+                catchError((error) => {
+                  console.warn(`Error obteniendo detalles de ${pokemon.name}:`, error);
+                  return EMPTY;
+                })
+              ),
+            6 // concurrencia limitada
+          ),
+          toArray(),
+          map(
+            (arr) =>
+              arr
+                .filter(Boolean)
+                .sort((a, b) => b.bst - a.bst) // Ordenar por BST descendente
+                .slice(0, 2) // Tomar los 2 más fuertes
+          )
+        )
+      );
+
+      console.log('Pokémon más fuertes obtenidos:', pokemonDetails.length);
+      return pokemonDetails;
+    } catch (error) {
+      console.error('Error al obtener pokémon más fuertes:', error);
+      // Fallback: devolver pokémon simulados si falla la API
+      return this.getFallbackRecommendations();
+    }
   }
 
   /** ====== Utilidades ====== */
@@ -386,6 +398,38 @@ export class PokemonService {
       set.add(Math.floor(Math.random() * (max - min + 1)) + min);
     }
     return Array.from(set);
+  }
+
+  /**
+   * Obtiene una selección aleatoria de elementos de un array
+   */
+  private getRandomSelection<T>(array: T[], count: number): T[] {
+    const shuffled = [...array].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  }
+
+  /**
+   * Recomendaciones de fallback cuando falla la API
+   */
+  private getFallbackRecommendations(): (CapturedPokemon & { bst: number })[] {
+    const strongPokemonIds = [150, 249, 250, 382, 383, 384, 483, 484]; // Legendarios conocidos
+    const selectedIds = this.getRandomSelection(strongPokemonIds, 2);
+
+    return selectedIds.map((id) => ({
+      id,
+      name: `Pokemon-${id}`,
+      level: Math.floor(Math.random() * 30) + 70,
+      capturedAt: '',
+      region: null,
+      generation: null,
+      sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+      atk: Math.floor(Math.random() * 50) + 120,
+      def: Math.floor(Math.random() * 50) + 100,
+      spd: Math.floor(Math.random() * 50) + 110,
+      types: ['dragon'], // Tipo común en legendarios
+      baseExperience: 350,
+      bst: Math.floor(Math.random() * 100) + 600, // BST muy alto
+    }));
   }
 
   /**
