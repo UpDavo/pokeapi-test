@@ -1,0 +1,31 @@
+{
+  "menu": {
+    "home": "Inicio",
+    "pokedex": "Pokédex",
+    "teams": "Mis equipos",
+    "teamList": "Equipos",
+    "newTeam": "Nuevo equipo",
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "logout": "Salir",
+    "language": "Español 🇪🇸"
+  },
+  "home": {
+    "welcome": "¡Bienvenido, Ash Ketchum!",
+    "pokemonCaught": "Pokémon Capturados",
+    "pokedex": "Pokédex",
+    "averageLevel": "Nivel promedio",
+    "favoriteType": "Tipo favorito",
+    "experience": "Experiencia",
+    "strongestPokemon": "Pokémon más fuerte",
+    "myPokemons": "Mis Pokemons",
+    "recommended": "Recomendados",
+    "viewAll": "Ver todos",
+    "available": "disponibles",
+    "progress": "de progreso",
+    "collection": "de la colección",
+    "mostCollected": "más coleccionados",
+    "accumulatedPoints": "puntos acumulados",
+    "totalPower": "de poder total"
+  }
+}

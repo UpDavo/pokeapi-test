@@ -6,80 +6,124 @@
       <div class="card-body">
         <h2 class="text-center text-xl font-bold mb-4">Registro</h2>
 
-        <!-- Si aún no se ha registrado -->
+        <!-- Loading -->
+        @if (isLoading) {
+        <div class="text-center">
+          <span class="loading loading-dots loading-lg"></span>
+          <p class="mt-2">Cuenta registrada correctamente. Redirigiendo al login...</p>
+        </div>
+        } @else {
+        <!-- Formulario -->
         <form
-          *ngIf="!registered"
           [formGroup]="form"
           (ngSubmit)="submit()"
           class="grid grid-cols-1 md:grid-cols-2 gap-3"
         >
-          <input
-            type="text"
-            formControlName="firstName"
-            placeholder="Nombre *"
-            class="input input-bordered rounded-full col-span-1"
-          />
-          <input
-            type="text"
-            formControlName="lastName"
-            placeholder="Apellido *"
-            class="input input-bordered rounded-full col-span-1"
-          />
+          <div class="col-span-1">
+            <input
+              type="text"
+              formControlName="firstName"
+              placeholder="Nombre *"
+              class="input input-bordered rounded-full w-full"
+            />
+            @if (form.get('firstName')?.invalid && form.get('firstName')?.touched) {
+            <div class="text-red-500 text-sm mt-1">
+              @if (form.get('firstName')?.errors?.['required']) {
+              <span>Nombre es requerido.</span>
+              }
+            </div>
+            }
+          </div>
 
-          <input
-            type="email"
-            formControlName="email"
-            placeholder="Correo *"
-            class="input input-bordered rounded-full col-span-1"
-          />
-          <input
-            type="text"
-            formControlName="phone"
-            placeholder="Teléfono *"
-            class="input input-bordered rounded-full col-span-1"
-          />
+          <div class="col-span-1">
+            <input
+              type="text"
+              formControlName="lastName"
+              placeholder="Apellido *"
+              class="input input-bordered rounded-full w-full"
+            />
+            @if (form.get('lastName')?.invalid && form.get('lastName')?.touched) {
+            <div class="text-red-500 text-sm mt-1">
+              @if (form.get('lastName')?.errors?.['required']) {
+              <span>Apellido es requerido.</span>
+              }
+            </div>
+            }
+          </div>
 
-          <select formControlName="city" class="select select-bordered rounded-full col-span-1">
-            <option disabled selected>Ciudad *</option>
-            <option>Quito</option>
-            <option>Guayaquil</option>
-            <option>Cuenca</option>
-          </select>
-          <select formControlName="referral" class="select select-bordered rounded-full col-span-1">
-            <option disabled selected>¿Alguien te refirió? *</option>
-            <option>Sí</option>
-            <option>No</option>
-          </select>
+          <div class="col-span-1">
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="Correo *"
+              class="input input-bordered rounded-full w-full"
+            />
+            @if (form.get('email')?.invalid && form.get('email')?.touched) {
+            <div class="text-red-500 text-sm mt-1">
+              @if (form.get('email')?.errors?.['required']) {
+              <span>Correo es requerido.</span>
+              } @if (form.get('email')?.errors?.['email']) {
+              <span>Formato de correo inválido.</span>
+              }
+            </div>
+            }
+          </div>
 
-          <input
-            type="password"
-            formControlName="password"
-            placeholder="Contraseña *"
-            class="input input-bordered rounded-full col-span-1"
-          />
-          <input
-            type="password"
-            formControlName="confirmPassword"
-            placeholder="Confirma Contraseña *"
-            class="input input-bordered rounded-full col-span-1"
-          />
+          <div class="col-span-1">
+            <input
+              type="text"
+              formControlName="phone"
+              placeholder="Teléfono"
+              class="input input-bordered rounded-full w-full"
+            />
+          </div>
 
-          <!-- Mensaje único de errores al final de los campos -->
-          <div
-            *ngIf="form.invalid && (form.touched || form.dirty)"
-            class="col-span-1 md:col-span-2 text-red-500 text-sm"
-          >
-            <p class="font-semibold">* Faltan campos obligatorios:</p>
-            <ul class="list-disc list-inside ml-4">
-              <li *ngIf="form.get('firstName')?.invalid">Nombre</li>
-              <li *ngIf="form.get('lastName')?.invalid">Apellido</li>
-              <li *ngIf="form.get('email')?.invalid">Correo</li>
-              <li *ngIf="form.get('phone')?.invalid">Teléfono</li>
-              <li *ngIf="form.get('city')?.invalid">Ciudad</li>
-              <li *ngIf="form.get('referral')?.invalid">Referencia</li>
-              <li *ngIf="form.get('password')?.invalid">Contraseña</li>
-              <li *ngIf="form.get('confirmPassword')?.invalid">Confirmar contraseña</li>
-            </ul>
+          <div class="col-span-1">
+            <input
+              type="text"
+              formControlName="city"
+              placeholder="Ciudad"
+              class="input input-bordered rounded-full w-full"
+            />
+          </div>
+
+          <div class="col-span-1">
+            <input
+              type="password"
+              formControlName="password"
+              placeholder="Contraseña *"
+              class="input input-bordered rounded-full w-full"
+            />
+            @if (form.get('password')?.invalid && form.get('password')?.touched) {
+            <div class="text-red-500 text-sm mt-1">
+              @if (form.get('password')?.errors?.['required']) {
+              <span>Contraseña es requerida.</span>
+              } @if (form.get('password')?.errors?.['invalidPassword']) {
+              <span>
+                La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un
+                número.
+              </span>
+              }
+            </div>
+            }
+          </div>
+
+          <div class="col-span-1">
+            <input
+              type="password"
+              formControlName="confirmPassword"
+              placeholder="Confirma Contraseña *"
+              class="input input-bordered rounded-full w-full"
+            />
+            @if (form.get('confirmPassword')?.invalid && form.get('confirmPassword')?.touched) {
+            <div class="text-red-500 text-sm mt-1">
+              @if (form.get('confirmPassword')?.errors?.['required']) {
+              <span>Confirmación de contraseña es requerida.</span>
+              } @if (form.get('confirmPassword')?.errors?.['passwordsMismatch']) {
+              <span>Las contraseñas no coinciden.</span>
+              }
+            </div>
+            }
           </div>
 
           <!-- Botón -->
@@ -96,16 +140,7 @@
             <a routerLink="/login" class="link link-hover">Inicia sesión aquí</a>.
           </div>
         </form>
-
-        <!-- Mensaje de confirmación -->
-        <div *ngIf="registered" class="text-center space-y-4">
-          <h2 class="text-2xl font-bold">¡Gracias por registrarte!</h2>
-          <p>
-            La confirmación llegará a tu correo electrónico.<br />
-            Una vez confirmado, podrás iniciar sesión.
-          </p>
-          <a routerLink="/login" class="btn btn-primary rounded-full">Ir al Login</a>
-        </div>
+        }
       </div>
     </div>
 

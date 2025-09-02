@@ -40,9 +40,11 @@
           </button>
         </form>
 
-        <div *ngIf="errorMessage" class="text-red-400 text-sm mt-2 text-center">
+        @if (errorMessage) {
+        <div class="text-red-400 text-sm mt-2 text-center">
           {{ errorMessage }}
         </div>
+        }
 
         <div class="text-center text-sm mt-3">
           Si no tienes una cuenta

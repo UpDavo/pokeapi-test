@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { NgIf } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { Auth } from '../../services/auth';
+import { Auth } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, NgIf],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
 })
 export class Login {
@@ -28,7 +27,7 @@ export class Login {
 
       if (success) {
         this.errorMessage = '';
-        this.router.navigate(['/home']);
+        this.router.navigate(['/']);
       } else {
         this.errorMessage = 'Credenciales inválidas. Intente nuevamente.';
       }

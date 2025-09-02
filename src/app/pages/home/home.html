@@ -1,1 +1,109 @@
-<p>home works!</p>
+<div class="space-y-6">
+  <!-- Bienvenida -->
+  <h1 class="text-2xl font-bold text-primary">
+    {{ 'home.welcome' | translate }}
+  </h1>
+
+  <!-- Resumen -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+    <div class="stat bg-base-100 shadow">
+      <div class="stat-title">Pokémon capturados</div>
+      <div class="stat-value">{{ capturedCount }}</div>
+      <div class="stat-desc">de {{ pokedexTotal || 0 }} disponibles</div>
+    </div>
+
+    <div class="stat bg-base-100 shadow">
+      <div class="stat-title">Pokédex</div>
+      <div class="stat-value">{{ pokedexPct | number : '1.0-0' }}%</div>
+      <div class="stat-desc">ocupado</div>
+    </div>
+
+    <div class="stat bg-base-100 shadow">
+      <div class="stat-title">Nivel promedio</div>
+      <div class="stat-value">{{ avgLevel || 0 }}</div>
+      <div class="stat-desc">de la colección</div>
+    </div>
+
+    <div class="stat bg-base-100 shadow">
+      <div class="stat-title">Tipo favorito</div>
+      <div class="stat-value">{{ favoriteType || 'Sin datos' }}</div>
+      <div class="stat-desc">más coleccionado</div>
+    </div>
+
+    <div class="stat bg-base-100 shadow">
+      <div class="stat-title">Experiencia total</div>
+      <div class="stat-value">{{ totalExp || 0 }}</div>
+      <div class="stat-desc">puntos acumulados</div>
+    </div>
+
+    <div class="stat bg-base-100 shadow">
+      <div class="stat-title">Pokémon con mayor ATK</div>
+      <div class="stat-value">{{ strongest?.name || 'Ninguno' }}</div>
+      <div class="stat-desc" *ngIf="strongest">ATK {{ strongest!.atk }}</div>
+    </div>
+  </div>
+
+  <!-- Mis Pokémon y Recomendados -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Mis Pokémon -->
+    <div class="card bg-base-100 shadow">
+      <div class="card-body">
+        <h2 class="card-title">Mis Pokémon</h2>
+
+        @if (recentCaptures.length > 0) {
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            @for (p of recentCaptures; track p.id) {
+              <div class="card bg-base-200 p-4 flex gap-3 items-center">
+                <img [src]="p.sprite" [alt]="p.name" class="w-20 h-20 object-contain" />
+                <div>
+                  <h3 class="text-lg font-bold capitalize">{{ p.name }} <span class="opacity-60">Lv {{ p.level }}</span></h3>
+                  <div class="text-sm opacity-80">ATK {{ p.atk }} • DEF {{ p.def }} • SPD {{ p.spd }}</div>
+                  <div class="mt-1">
+                    @for (t of p.types; track t) {
+                      <span class="badge badge-outline mr-1">{{ t }}</span>
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="opacity-70">No hay Pokémon capturados aún.</div>
+        }
+
+        <a class="link link-primary mt-4">Ver todos</a>
+      </div>
+    </div>
+
+    <!-- Recomendados -->
+    <div class="card bg-base-100 shadow">
+      <div class="card-body">
+        <h2 class="card-title">Recomendados</h2>
+
+        @if (recommended.length > 0) {
+          <div class="space-y-4">
+            @for (r of recommended; track r.id) {
+              <div class="card bg-base-200 p-4 flex gap-3 items-center">
+                <img [src]="r.sprite" [alt]="r.name" class="w-20 h-20 object-contain" />
+                <div>
+                  <h3 class="text-lg font-bold capitalize">{{ r.name }}</h3>
+                  <div class="text-sm opacity-80">ATK {{ r.atk }} • DEF {{ r.def }} • SPD {{ r.spd }}</div>
+                  <div class="text-sm">Poder total {{ r.bst }}</div>
+                  <div class="mt-1">
+                    @for (t of r.types; track t) {
+                      <span class="badge badge-outline mr-1">{{ t }}</span>
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="opacity-70">Sin datos</div>
+        }
+
+        <a class="link link-primary mt-4">Ver todos</a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { NgIf } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { passwordValidator, confirmPasswordValidator } from '../../utils/authUtils';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, RouterLink, NgIf],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './register.html',
 })
 export class Register {
@@ -15,18 +15,21 @@ export class Register {
     email: new FormControl('', [Validators.required, Validators.email]),
     phone: new FormControl(''),
     city: new FormControl(''),
-    referral: new FormControl(''),
-    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-    confirmPassword: new FormControl('', Validators.required),
+    password: new FormControl('', [Validators.required, passwordValidator]),
+    confirmPassword: new FormControl('', [Validators.required, confirmPasswordValidator]),
   });
 
-  registered = false; // bandera para mostrar el mensaje de confirmación
+  isLoading = false;
+
+  constructor(private router: Router) {}
 
   submit() {
     if (this.form.valid) {
       console.log(this.form.value);
-      // aquí iría la lógica real de registro (API)
-      this.registered = true;
+      this.isLoading = true;
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 3000);
     }
   }
 }

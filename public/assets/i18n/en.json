@@ -1,0 +1,31 @@
+{
+  "menu": {
+    "home": "Home",
+    "pokedex": "Pokédex",
+    "teams": "My Teams",
+    "teamList": "Teams",
+    "newTeam": "New Team",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "language": "English 🇺🇸"
+  },
+  "home": {
+    "welcome": "Welcome, Ash Ketchum!",
+    "pokemonCaught": "Caught Pokémon",
+    "pokedex": "Pokédex",
+    "averageLevel": "Average Level",
+    "favoriteType": "Favorite Type",
+    "experience": "Experience",
+    "strongestPokemon": "Strongest Pokémon",
+    "myPokemons": "My Pokémon",
+    "recommended": "Recommended",
+    "viewAll": "View All",
+    "available": "available",
+    "progress": "progress",
+    "collection": "of collection",
+    "mostCollected": "most collected",
+    "accumulatedPoints": "accumulated points",
+    "totalPower": "total power"
+  }
+}
