@@ -1,0 +1,7 @@
+<div class="stat bg-white rounded-lg border border-gray-200 md:h-30" [class]="customClasses">
+  <div class="stat-title text-sm text-black">{{ title }}</div>
+  <div class="stat-value text-lg font-bold text-black">{{ formattedValue }}</div>
+  @if (description) {
+    <div class="stat-desc text-xs text-black">{{ description }}</div>
+  }
+</div>

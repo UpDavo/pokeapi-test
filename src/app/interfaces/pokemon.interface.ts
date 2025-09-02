@@ -5,7 +5,9 @@ export interface CapturedPokemon {
   id: number;
   name: string;
   level: number; // nivel del usuario
-  capturedAt: string; // ISO
+  capturedAt: string;
+  region: string | null;
+  generation: string | null;
   sprite: string;
   atk: number;
   def: number;

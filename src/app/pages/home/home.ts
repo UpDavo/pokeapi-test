@@ -1,19 +1,27 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { interval, takeUntil, Subject } from 'rxjs';
-import { DecimalPipe } from '@angular/common';
 import { PokemonService } from '../../services/pokemon.service';
 import { CapturedPokemon, PokemonMetrics } from '../../interfaces/pokemon.interface';
+import { StatCard } from './components/stat-card/stat-card';
+import { RecomendedPokemonCard } from './components/recomended-pokemon-card/recomended-pokemon-card';
+import { MyPokemonCard } from './components/my-pokemon-card/my-pokemon-card';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [TranslateModule, DecimalPipe],
+  imports: [TranslateModule, StatCard, RecomendedPokemonCard, MyPokemonCard],
   templateUrl: './home.html',
 })
 export class Home implements OnInit, OnDestroy {
   private pokemonService = inject(PokemonService);
+  private cdr = inject(ChangeDetectorRef);
   private destroy$ = new Subject<void>();
+
+  // Estados de carga independientes
+  isLoadingMetrics = true;
+  isLoadingRecentCaptures = true;
+  isLoadingRecommendations = true;
 
   // Métricas
   capturedCount = 0;
@@ -27,6 +35,11 @@ export class Home implements OnInit, OnDestroy {
   // Listas
   recentCaptures: CapturedPokemon[] = [];
   recommended: (CapturedPokemon & { bst: number })[] = [];
+
+  // Propiedades computadas para el estado general
+  get isLoadingAny(): boolean {
+    return this.isLoadingMetrics || this.isLoadingRecentCaptures || this.isLoadingRecommendations;
+  }
 
   /** ====== Ciclo de vida ====== */
   ngOnInit(): void {
@@ -44,24 +57,18 @@ export class Home implements OnInit, OnDestroy {
   }
 
   /** ====== Carga principal ====== */
-  private async loadAll(): Promise<void> {
-    try {
-      // 1) Cargar métricas
-      await this.loadMetrics();
-
-      // 2) Obtener capturas recientes
-      this.recentCaptures = this.pokemonService.getRecentCaptures(4);
-
-      // 3) Asegurar cache del top 100 y obtener recomendaciones
-      await this.pokemonService.ensureTop100StrongCache();
-      this.updateRecommendations();
-    } catch (error) {
-      console.error('Error al cargar datos del home:', error);
-    }
+  private loadAll(): void {
+    // Iniciar todas las cargas de forma independiente
+    this.loadMetricsAsync();
+    this.loadRecentCapturesAsync();
+    this.loadRecommendationsAsync();
   }
 
-  /** ====== Métricas ====== */
-  private async loadMetrics(): Promise<void> {
+  /** ====== Carga asíncrona de métricas ====== */
+  private async loadMetricsAsync(): Promise<void> {
+    this.isLoadingMetrics = true;
+    this.cdr.detectChanges();
+
     try {
       const metrics = await this.pokemonService.computeMetrics();
       this.capturedCount = metrics.capturedCount;
@@ -73,6 +80,44 @@ export class Home implements OnInit, OnDestroy {
       this.strongest = metrics.strongest;
     } catch (error) {
       console.error('Error al cargar métricas:', error);
+    } finally {
+      this.isLoadingMetrics = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  /** ====== Carga asíncrona de capturas recientes ====== */
+  private async loadRecentCapturesAsync(): Promise<void> {
+    this.isLoadingRecentCaptures = true;
+    this.cdr.detectChanges();
+
+    try {
+      // Simular un pequeño delay para mostrar la carga asíncrona
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      this.recentCaptures = this.pokemonService.getRecentCaptures(4);
+      console.log('Capturas recientes cargadas:', this.recentCaptures.length);
+    } catch (error) {
+      console.error('Error al cargar capturas recientes:', error);
+    } finally {
+      this.isLoadingRecentCaptures = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  /** ====== Carga asíncrona de recomendaciones ====== */
+  private async loadRecommendationsAsync(): Promise<void> {
+    this.isLoadingRecommendations = true;
+    this.cdr.detectChanges();
+
+    try {
+      // Simular un pequeño delay para mostrar la carga asíncrona
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      this.updateRecommendations();
+    } catch (error) {
+      console.error('Error al cargar recomendaciones:', error);
+    } finally {
+      this.isLoadingRecommendations = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -82,18 +127,32 @@ export class Home implements OnInit, OnDestroy {
   }
 
   /** ====== Métodos públicos para interacción ====== */
-  
+
   /**
-   * Refresca todos los datos
+   * Refresca todos los datos de forma asíncrona
    */
   async refresh(): Promise<void> {
-    await this.loadAll();
+    this.loadAll();
   }
 
   /**
-   * Obtiene nuevas recomendaciones
+   * Refresca solo las métricas
    */
-  refreshRecommendations(): void {
-    this.updateRecommendations();
+  async refreshMetrics(): Promise<void> {
+    await this.loadMetricsAsync();
+  }
+
+  /**
+   * Refresca solo las capturas recientes
+   */
+  async refreshRecentCaptures(): Promise<void> {
+    await this.loadRecentCapturesAsync();
+  }
+
+  /**
+   * Obtiene nuevas recomendaciones de forma asíncrona
+   */
+  async refreshRecommendations(): Promise<void> {
+    await this.loadRecommendationsAsync();
   }
 }

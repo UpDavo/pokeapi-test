@@ -1,0 +1,55 @@
+<div class="bg-white border border-gray-200 rounded-xl p-4 flex items-start gap-4 relative mb-4">
+  <!-- Imagen -->
+  <img
+    [src]="pokemon.sprite"
+    [alt]="pokemon.name"
+    class="w-24 h-24 object-contain rounded-lg border"
+  />
+
+  <!-- Contenido -->
+  <div class="flex-1 space-y-1">
+    <!-- Nombre + Tipos -->
+    <div class="grid grid-cols-1 items-center">
+      <h3 class="font-bold capitalize text-black">{{ pokemon.name }}</h3>
+      <div class="">
+        @for (type of pokemon.types; track type) {
+        <span
+          class="text-xs font-medium text-white px-2 py-0.5 rounded-md uppercase"
+          [ngClass]="{
+            'bg-green-500': type === 'grass' || type === 'bug',
+            'bg-yellow-500': type === 'electric' || type === 'psychic',
+            'bg-blue-500': type === 'water' || type === 'ice',
+            'bg-red-500': type === 'fire' || type === 'fighting' || type === 'dragon',
+            'bg-gray-500': type === 'rock' || type === 'steel' || type === 'ground',
+            'bg-purple-500': type === 'ghost' || type === 'poison' || type === 'dark',
+            'bg-pink-500': type === 'fairy',
+            'bg-slate-400': type === 'normal'
+          }"
+        >
+          {{ type }}
+        </span>
+        }
+      </div>
+    </div>
+
+    <!-- Info principal -->
+    <div class="text-xs text-black flex flex-wrap gap-4">
+      <span>Región: {{ pokemon.region || 'Sin datos' }}</span>
+      <span>Gen: {{ pokemon.generation || 'N/A' }}</span>
+      <span>Exp {{ pokemon.baseExperience }}</span>
+      <span>Poder {{ pokemon.bst }}</span>
+    </div>
+
+    <!-- Stats -->
+    <div class="text-xs text-black flex flex-wrap gap-2 mt-5">
+      <span>ATK {{ pokemon.atk }}</span>
+      <span>DEF {{ pokemon.def }}</span>
+      <span>SPD {{ pokemon.spd }}</span>
+    </div>
+  </div>
+
+  <!-- Número en la esquina -->
+  <div class="absolute top-2 right-2 bg-black text-white text-xs px-2 py-0.5 rounded-full">
+    #{{ pokemon.id }}
+  </div>
+</div>

@@ -1,108 +1,130 @@
-<div class="space-y-6">
+<div class="space-y-8">
   <!-- Bienvenida -->
-  <h1 class="text-2xl font-bold text-primary">
-    {{ 'home.welcome' | translate }}
-  </h1>
+  <h1 class="text-xl font-bold text-black">¡Bienvenido, Ash Ketchum!</h1>
 
   <!-- Resumen -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
-    <div class="stat bg-base-100 shadow">
-      <div class="stat-title">Pokémon capturados</div>
-      <div class="stat-value">{{ capturedCount }}</div>
-      <div class="stat-desc">de {{ pokedexTotal || 0 }} disponibles</div>
-    </div>
+  <div class="border border-gray-200 rounded-xl p-4">
+    <h1 class="text-xl text-black font-bold mb-2">Resumen</h1>
 
-    <div class="stat bg-base-100 shadow">
-      <div class="stat-title">Pokédex</div>
-      <div class="stat-value">{{ pokedexPct | number : '1.0-0' }}%</div>
-      <div class="stat-desc">ocupado</div>
+    @if (isLoadingMetrics) {
+    <div class="flex items-center justify-center py-8">
+      <div class="text-center space-y-2">
+        <span class="loading loading-spinner loading-md text-primary"></span>
+        <p class="text-sm text-gray-500">Cargando métricas...</p>
+      </div>
     </div>
+    } @else {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 md:grid-cols-4 gap-4">
+      <app-stat-card
+        title="Pokémon Capturados"
+        [value]="capturedCount"
+        [description]="'de ' + (pokedexTotal || 0) + ' disponibles'"
+        format="number"
+      >
+      </app-stat-card>
 
-    <div class="stat bg-base-100 shadow">
-      <div class="stat-title">Nivel promedio</div>
-      <div class="stat-value">{{ avgLevel || 0 }}</div>
-      <div class="stat-desc">de la colección</div>
-    </div>
+      <app-stat-card
+        title="Pokédex"
+        [value]="pokedexPct"
+        description="de progreso"
+        format="percentage"
+      >
+      </app-stat-card>
 
-    <div class="stat bg-base-100 shadow">
-      <div class="stat-title">Tipo favorito</div>
-      <div class="stat-value">{{ favoriteType || 'Sin datos' }}</div>
-      <div class="stat-desc">más coleccionado</div>
-    </div>
+      <app-stat-card
+        title="Nivel promedio"
+        [value]="avgLevel || 0"
+        description="de la colección"
+        format="number"
+      >
+      </app-stat-card>
 
-    <div class="stat bg-base-100 shadow">
-      <div class="stat-title">Experiencia total</div>
-      <div class="stat-value">{{ totalExp || 0 }}</div>
-      <div class="stat-desc">puntos acumulados</div>
-    </div>
+      <app-stat-card
+        title="Tipo favorito"
+        [value]="favoriteType || 'Sin datos'"
+        description="más coleccionados"
+      >
+      </app-stat-card>
 
-    <div class="stat bg-base-100 shadow">
-      <div class="stat-title">Pokémon con mayor ATK</div>
-      <div class="stat-value">{{ strongest?.name || 'Ninguno' }}</div>
-      <div class="stat-desc" *ngIf="strongest">ATK {{ strongest!.atk }}</div>
+      <app-stat-card
+        title="Experiencia"
+        [value]="totalExp || 0"
+        description="puntos acumulados"
+        format="number"
+      >
+      </app-stat-card>
+
+      <app-stat-card
+        title="Pokémon más fuerte"
+        [value]="strongest?.name || 'Ninguno'"
+        [description]="strongest ? strongest.atk + ' de poder total' : ''"
+      >
+      </app-stat-card>
     </div>
+    }
   </div>
 
   <!-- Mis Pokémon y Recomendados -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <!-- Mis Pokémon -->
-    <div class="card bg-base-100 shadow">
-      <div class="card-body">
-        <h2 class="card-title">Mis Pokémon</h2>
+    <div>
+      <div class="card bg-white border border-gray-200">
+        <div class="card-body">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="font-bold text-lg text-black">Mis Pokemons</h2>
+          </div>
 
-        @if (recentCaptures.length > 0) {
+          @if (isLoadingRecentCaptures) {
+          <div class="flex items-center justify-center py-8">
+            <div class="text-center space-y-2">
+              <span class="loading loading-spinner loading-md text-primary"></span>
+              <p class="text-sm text-gray-500">Cargando Pokémon...</p>
+            </div>
+          </div>
+          } @else { @if (recentCaptures.length > 0) {
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             @for (p of recentCaptures; track p.id) {
-              <div class="card bg-base-200 p-4 flex gap-3 items-center">
-                <img [src]="p.sprite" [alt]="p.name" class="w-20 h-20 object-contain" />
-                <div>
-                  <h3 class="text-lg font-bold capitalize">{{ p.name }} <span class="opacity-60">Lv {{ p.level }}</span></h3>
-                  <div class="text-sm opacity-80">ATK {{ p.atk }} • DEF {{ p.def }} • SPD {{ p.spd }}</div>
-                  <div class="mt-1">
-                    @for (t of p.types; track t) {
-                      <span class="badge badge-outline mr-1">{{ t }}</span>
-                    }
-                  </div>
-                </div>
-              </div>
+            <app-my-pokemon-card [pokemon]="p"></app-my-pokemon-card>
             }
           </div>
-        } @else {
-          <div class="opacity-70">No hay Pokémon capturados aún.</div>
-        }
-
-        <a class="link link-primary mt-4">Ver todos</a>
+          } @else {
+          <div class="opacity-70 text-sm text-black">No hay Pokémon capturados aún.</div>
+          } }
+        </div>
+      </div>
+      <div class="flex justify-end mt-2">
+        <a class="link link-primary text-sm">Ver todos</a>
       </div>
     </div>
 
     <!-- Recomendados -->
-    <div class="card bg-base-100 shadow">
-      <div class="card-body">
-        <h2 class="card-title">Recomendados</h2>
+    <div>
+      <div class="card bg-white border border-gray-200">
+        <div class="card-body">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="font-bold text-lg text-black">Recomendados</h2>
+          </div>
 
-        @if (recommended.length > 0) {
-          <div class="space-y-4">
+          @if (isLoadingRecommendations) {
+          <div class="flex items-center justify-center py-8">
+            <div class="text-center space-y-2">
+              <span class="loading loading-spinner loading-md text-primary"></span>
+              <p class="text-sm text-gray-500">Cargando recomendaciones...</p>
+            </div>
+          </div>
+          } @else { @if (recommended.length > 0) {
+          <div class="space-y-3">
             @for (r of recommended; track r.id) {
-              <div class="card bg-base-200 p-4 flex gap-3 items-center">
-                <img [src]="r.sprite" [alt]="r.name" class="w-20 h-20 object-contain" />
-                <div>
-                  <h3 class="text-lg font-bold capitalize">{{ r.name }}</h3>
-                  <div class="text-sm opacity-80">ATK {{ r.atk }} • DEF {{ r.def }} • SPD {{ r.spd }}</div>
-                  <div class="text-sm">Poder total {{ r.bst }}</div>
-                  <div class="mt-1">
-                    @for (t of r.types; track t) {
-                      <span class="badge badge-outline mr-1">{{ t }}</span>
-                    }
-                  </div>
-                </div>
-              </div>
+            <app-recomended-pokemon-card [pokemon]="r"></app-recomended-pokemon-card>
             }
           </div>
-        } @else {
-          <div class="opacity-70">Sin datos</div>
-        }
-
-        <a class="link link-primary mt-4">Ver todos</a>
+          } @else {
+          <div class="opacity-70 text-sm">Sin datos</div>
+          } }
+        </div>
+      </div>
+      <div class="flex justify-end mt-2">
+        <a class="link link-primary text-sm">Ver todos</a>
       </div>
     </div>
   </div>
