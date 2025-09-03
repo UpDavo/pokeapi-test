@@ -1,0 +1,98 @@
+@if (pokemon) {
+<div class="card bg-white border border-gray-200 hover:shadow-lg transition-shadow duration-200">
+  <div class="card-body p-4">
+    <!-- Header con nombre y ID -->
+    <div class="flex justify-between items-start mb-3">
+      <div>
+        <h3 class="font-bold text-lg text-black capitalize">{{ pokemon.name }}</h3>
+        <p class="text-sm text-gray-500">#{{ pokemon.id.toString().padStart(3, '0') }}</p>
+      </div>
+      @if (showLevel && pokemon.level) {
+      <div class="badge badge-primary badge-sm">
+        {{ 'pokedex.card.level' | translate }} {{ pokemon.level }}
+      </div>
+      }
+    </div>
+
+    <!-- Imagen del Pokémon -->
+    <div class="flex justify-center mb-4">
+      @if (pokemon.sprite) {
+      <img
+        [src]="pokemon.sprite"
+        [alt]="pokemon.name"
+        class="w-20 h-20 object-contain"
+        loading="lazy"
+      />
+      } @else {
+      <div class="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center">
+        <span class="text-gray-400 text-xs">{{ 'pokedex.card.noImage' | translate }}</span>
+      </div>
+      }
+    </div>
+
+    <!-- Tipos -->
+    @if (pokemon.types && pokemon.types.length) {
+    <div class="flex flex-wrap gap-1 mb-3 justify-center">
+      @for (type of pokemon.types; track type) {
+      <span class="badge badge-sm" [class]="getTypeStyle(type)">
+        {{ 'pokedex.types.' + type | translate }}
+      </span>
+      }
+    </div>
+    }
+
+    <!-- Stats -->
+    @if (showStats) {
+    <div class="grid grid-cols-3 gap-2 text-center mb-3">
+      <div class="bg-red-50 rounded p-2">
+        <div class="text-xs text-gray-600">{{ 'pokedex.card.attack' | translate }}</div>
+        <div class="font-bold text-sm text-red-600">{{ pokemon.atk || 0 }}</div>
+      </div>
+      <div class="bg-blue-50 rounded p-2">
+        <div class="text-xs text-gray-600">{{ 'pokedex.card.defense' | translate }}</div>
+        <div class="font-bold text-sm text-blue-600">{{ pokemon.def || 0 }}</div>
+      </div>
+      <div class="bg-green-50 rounded p-2">
+        <div class="text-xs text-gray-600">{{ 'pokedex.card.speed' | translate }}</div>
+        <div class="font-bold text-sm text-green-600">{{ pokemon.spd || 0 }}</div>
+      </div>
+    </div>
+    }
+
+    <!-- Fecha de captura -->
+    @if (showCaptureDate && pokemon.capturedAt) {
+    <div class="text-xs text-gray-500 text-center">
+      {{ 'pokedex.card.captured' | translate }}: {{ formattedCaptureDate }}
+    </div>
+    }
+
+    <!-- Experiencia -->
+    @if (pokemon.baseExperience) {
+    <div class="text-xs text-gray-500 text-center mt-1">
+      {{ pokemon.baseExperience }} {{ 'pokedex.card.exp' | translate }}
+    </div>
+    }
+
+    <!-- Región/Generación (si están disponibles) -->
+    @if (pokemon.region || pokemon.generation) {
+    <div class="flex justify-center gap-2 mt-2">
+      @if (pokemon.region) {
+      <span class="badge badge-outline badge-xs">
+        {{ 'pokedex.regions.' + pokemon.region | translate }}
+      </span>
+      } @if (pokemon.generation) {
+      <span class="badge badge-outline badge-xs">
+        {{ 'pokedex.card.gen' | translate }} {{ pokemon.generation }}
+      </span>
+      }
+    </div>
+    }
+  </div>
+</div>
+} @else {
+<div class="card bg-gray-50 border border-gray-200">
+  <div class="card-body p-4 text-center">
+    <div class="text-gray-400">{{ 'pokedex.card.noPokemon' | translate }}</div>
+  </div>
+</div>
+}

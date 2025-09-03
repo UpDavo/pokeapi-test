@@ -36,5 +36,93 @@
     "loadingPokemon": "Cargando Pokémon...",
     "loadingRecommendations": "Cargando recomendaciones...",
     "of": "de"
+  },
+  "pokedex": {
+    "title": "Pokédex",
+    "description": "Tu colección personal de Pokémon",
+    "refresh": "Actualizar",
+    "sortBy": "Ordenar por",
+    "filter": {
+      "title": "Filtros",
+      "of": "de",
+      "loading": "Cargando...",
+      "clearAll": "Limpiar filtros",
+      "search": "Buscar",
+      "searchPlaceholder": "Buscar por nombre, tipo o región...",
+      "type": "Tipo",
+      "allTypes": "Todos los tipos",
+      "region": "Región",
+      "allRegions": "Todas las regiones",
+      "generation": "Generación",
+      "allGenerations": "Todas las generaciones"
+    },
+    "sort": {
+      "captureDate": "Fecha de captura",
+      "name": "Nombre",
+      "level": "Nivel",
+      "attack": "Ataque",
+      "defense": "Defensa",
+      "speed": "Velocidad",
+      "ascending": "Ascendente",
+      "descending": "Descendente"
+    },
+    "card": {
+      "level": "Niv.",
+      "noImage": "Sin imagen",
+      "attack": "ATK",
+      "defense": "DEF",
+      "speed": "SPD",
+      "captured": "Capturado",
+      "exp": "EXP",
+      "gen": "Gen",
+      "noPokemon": "No hay Pokémon"
+    },
+    "loading": {
+      "title": "Cargando Pokédex...",
+      "description": "Obteniendo tu colección de Pokémon"
+    },
+    "empty": {
+      "title": "Pokédex vacía",
+      "description": "Aún no has capturado ningún Pokémon. ¡Sal a explorar!"
+    },
+    "noResults": {
+      "title": "No se encontraron Pokémon",
+      "description": "No hay Pokémon que coincidan con estos criterios de búsqueda",
+      "clearFilters": "Limpiar filtros"
+    },
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Siguiente"
+    },
+    "types": {
+      "normal": "Normal",
+      "fighting": "Lucha",
+      "flying": "Volador",
+      "poison": "Veneno",
+      "ground": "Tierra",
+      "rock": "Roca",
+      "bug": "Bicho",
+      "ghost": "Fantasma",
+      "steel": "Acero",
+      "fire": "Fuego",
+      "water": "Agua",
+      "grass": "Planta",
+      "electric": "Eléctrico",
+      "psychic": "Psíquico",
+      "ice": "Hielo",
+      "dragon": "Dragón",
+      "dark": "Siniestro",
+      "fairy": "Hada"
+    },
+    "regions": {
+      "kanto": "Kanto",
+      "johto": "Johto",
+      "hoenn": "Hoenn",
+      "sinnoh": "Sinnoh",
+      "unova": "Unova",
+      "kalos": "Kalos",
+      "alola": "Alola",
+      "galar": "Galar"
+    }
   }
 }

@@ -36,5 +36,93 @@
     "loadingPokemon": "Loading Pokémon...",
     "loadingRecommendations": "Loading recommendations...",
     "of": "of"
+  },
+  "pokedex": {
+    "title": "Pokédex",
+    "description": "Your personal Pokémon collection",
+    "refresh": "Refresh",
+    "sortBy": "Sort by",
+    "filter": {
+      "title": "Filters",
+      "of": "of",
+      "loading": "Loading...",
+      "clearAll": "Clear all filters",
+      "search": "Search",
+      "searchPlaceholder": "Search by name, type or region...",
+      "type": "Type",
+      "allTypes": "All types",
+      "region": "Region",
+      "allRegions": "All regions",
+      "generation": "Generation",
+      "allGenerations": "All generations"
+    },
+    "sort": {
+      "captureDate": "Capture date",
+      "name": "Name",
+      "level": "Level",
+      "attack": "Attack",
+      "defense": "Defense",
+      "speed": "Speed",
+      "ascending": "Ascending",
+      "descending": "Descending"
+    },
+    "card": {
+      "level": "Lv.",
+      "noImage": "No image",
+      "attack": "ATK",
+      "defense": "DEF",
+      "speed": "SPD",
+      "captured": "Captured",
+      "exp": "EXP",
+      "gen": "Gen",
+      "noPokemon": "No Pokémon"
+    },
+    "loading": {
+      "title": "Loading Pokédex...",
+      "description": "Getting your Pokémon collection"
+    },
+    "empty": {
+      "title": "Empty Pokédex",
+      "description": "You haven't caught any Pokémon yet. Go explore!"
+    },
+    "noResults": {
+      "title": "No Pokémon found",
+      "description": "There are no Pokémon matching these search criteria",
+      "clearFilters": "Clear filters"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "types": {
+      "normal": "Normal",
+      "fighting": "Fighting",
+      "flying": "Flying",
+      "poison": "Poison",
+      "ground": "Ground",
+      "rock": "Rock",
+      "bug": "Bug",
+      "ghost": "Ghost",
+      "steel": "Steel",
+      "fire": "Fire",
+      "water": "Water",
+      "grass": "Grass",
+      "electric": "Electric",
+      "psychic": "Psychic",
+      "ice": "Ice",
+      "dragon": "Dragon",
+      "dark": "Dark",
+      "fairy": "Fairy"
+    },
+    "regions": {
+      "kanto": "Kanto",
+      "johto": "Johto",
+      "hoenn": "Hoenn",
+      "sinnoh": "Sinnoh",
+      "unova": "Unova",
+      "kalos": "Kalos",
+      "alola": "Alola",
+      "galar": "Galar"
+    }
   }
 }

@@ -1,1 +1,160 @@
-<p>pokedex works!</p>
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-black">{{ 'pokedex.title' | translate }}</h1>
+      <p class="text-gray-600 mt-1">{{ 'pokedex.description' | translate }}</p>
+    </div>
+
+    <!-- Botón refrescar -->
+    <button class="btn btn-primary" (click)="refreshPokedex()" [disabled]="isLoading">
+      @if (isLoading) {
+      <span class="loading loading-spinner loading-sm"></span>
+      } @else {
+      {{ 'pokedex.refresh' | translate }}
+      }
+    </button>
+  </div>
+
+  <!-- Filtros -->
+  <app-pokemon-filter
+    [totalCount]="totalCount"
+    [filteredCount]="filteredCount"
+    [isLoading]="isLoading || isFiltering"
+    (filterChange)="onFilterChange($event)"
+    (clearFilters)="onClearFilters()"
+  ></app-pokemon-filter>
+
+  <!-- Barra de ordenamiento -->
+  @if (!isLoading && filteredCount > 0) {
+  <div class="bg-white border border-gray-200 rounded-xl p-4">
+    <div class="flex items-center justify-between flex-wrap gap-4">
+      <div class="flex items-center gap-4">
+        <span class="text-sm font-medium text-gray-700">{{ 'pokedex.sortBy' | translate }}:</span>
+
+        <select
+          class="select select-sm select-bordered"
+          [(ngModel)]="sortBy"
+          (change)="onSortChange(sortBy, sortOrder)"
+        >
+          <option value="capturedAt">{{ 'pokedex.sort.captureDate' | translate }}</option>
+          <option value="name">{{ 'pokedex.sort.name' | translate }}</option>
+          <option value="level">{{ 'pokedex.sort.level' | translate }}</option>
+          <option value="atk">{{ 'pokedex.sort.attack' | translate }}</option>
+          <option value="def">{{ 'pokedex.sort.defense' | translate }}</option>
+          <option value="spd">{{ 'pokedex.sort.speed' | translate }}</option>
+        </select>
+
+        <button
+          class="btn btn-sm btn-outline"
+          (click)="onSortChange(sortBy, sortOrder === 'asc' ? 'desc' : 'asc')"
+        >
+          @if (sortOrder === 'asc') { ↑ {{ 'pokedex.sort.ascending' | translate }} } @else { ↓
+          {{ 'pokedex.sort.descending' | translate }}
+          }
+        </button>
+      </div>
+
+      <!-- Info de paginación -->
+      @if (totalPages > 1) {
+      <div class="text-sm text-gray-600">
+        {{ paginationInfo }}
+      </div>
+      }
+    </div>
+  </div>
+  }
+
+  <!-- Estados de carga y vacío -->
+  @if (isLoading) {
+  <!-- Loading state -->
+  <div class="bg-white border border-gray-200 rounded-xl p-8">
+    <div class="flex items-center justify-center">
+      <div class="text-center space-y-4">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+        <div>
+          <h3 class="font-semibold text-gray-900">{{ 'pokedex.loading.title' | translate }}</h3>
+          <p class="text-gray-500 text-sm">{{ 'pokedex.loading.description' | translate }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  } @else if (hasNoPokemons) {
+  <!-- No Pokémon capturados -->
+  <div class="bg-white border border-gray-200 rounded-xl p-8">
+    <div class="text-center space-y-4">
+      <div class="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center">
+        <span class="text-2xl">📱</span>
+      </div>
+      <div>
+        <h3 class="font-semibold text-gray-900">{{ 'pokedex.empty.title' | translate }}</h3>
+        <p class="text-gray-500 text-sm">{{ 'pokedex.empty.description' | translate }}</p>
+      </div>
+    </div>
+  </div>
+  } @else if (hasNoResults) {
+  <!-- No resultados con filtros -->
+  <div class="bg-white border border-gray-200 rounded-xl p-8">
+    <div class="text-center space-y-4">
+      <div class="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center">
+        <span class="text-2xl">🔍</span>
+      </div>
+      <div>
+        <h3 class="font-semibold text-gray-900">{{ 'pokedex.noResults.title' | translate }}</h3>
+        <p class="text-gray-500 text-sm">{{ 'pokedex.noResults.description' | translate }}</p>
+        @if (hasActiveFilters) {
+        <button class="btn btn-sm btn-outline mt-2" (click)="onClearFilters()">
+          {{ 'pokedex.noResults.clearFilters' | translate }}
+        </button>
+        }
+      </div>
+    </div>
+  </div>
+  } @else {
+  <!-- Grid de Pokémon -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    @for (pokemon of displayedPokemon; track trackByPokemonId($index, pokemon)) {
+    <app-pokemon-card [pokemon]="pokemon"></app-pokemon-card>
+    } @empty {
+    <div class="col-span-full text-center py-8 text-gray-500">
+      {{ 'pokedex.noResults.title' | translate }}
+    </div>
+    }
+  </div>
+
+  <!-- Paginación -->
+  @if (totalPages > 1) {
+  <div class="flex justify-center">
+    <div class="join">
+      <!-- Botón anterior -->
+      <button
+        class="join-item btn btn-sm"
+        [disabled]="currentPage === 1"
+        (click)="onPageChange(currentPage - 1)"
+      >
+        « {{ 'pokedex.pagination.previous' | translate }}
+      </button>
+
+      <!-- Números de página -->
+      @for (page of pageNumbers; track page) {
+      <button
+        class="join-item btn btn-sm"
+        [class.btn-active]="page === currentPage"
+        (click)="onPageChange(page)"
+      >
+        {{ page }}
+      </button>
+      }
+
+      <!-- Botón siguiente -->
+      <button
+        class="join-item btn btn-sm"
+        [disabled]="currentPage === totalPages"
+        (click)="onPageChange(currentPage + 1)"
+      >
+        {{ 'pokedex.pagination.next' | translate }} »
+      </button>
+    </div>
+  </div>
+  } }
+</div>
