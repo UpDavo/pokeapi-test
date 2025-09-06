@@ -1,7 +1,11 @@
-<div class="stat bg-white rounded-lg border border-gray-200 md:h-30" [class]="customClasses">
-  <div class="stat-title text-sm text-black">{{ title }}</div>
-  <div class="stat-value text-lg font-bold text-black">{{ formattedValue }}</div>
-  @if (description) {
-    <div class="stat-desc text-xs text-black">{{ description }}</div>
-  }
-</div>
+<p-card [styleClass]="'h-full text-center ' + (customClasses || '')">
+  <ng-template pTemplate="content">
+    <div class="space-y-2">
+      <div class="text-sm text-gray-600">{{ title }}</div>
+      <div class="text-xl font-bold text-gray-800">{{ formattedValue }}</div>
+      @if (description) {
+      <div class="text-xs text-gray-500">{{ description }}</div>
+      }
+    </div>
+  </ng-template>
+</p-card>

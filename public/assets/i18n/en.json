@@ -35,26 +35,30 @@
     "loadingMetrics": "Loading metrics...",
     "loadingPokemon": "Loading Pokémon...",
     "loadingRecommendations": "Loading recommendations...",
-    "of": "of"
+    "of": "of",
+    "regionLabel": "Region:",
+    "generationLabel": "Gen:",
+    "experienceLabel": "Exp",
+    "powerLabel": "Power",
+    "numberLabel": "#"
   },
   "pokedex": {
     "title": "Pokédex",
-    "description": "Your personal Pokémon collection",
-    "refresh": "Refresh",
+    "description": "Here you can see all the Pokémon you have captured",
+    "add_new": "Add Pokémon",
+    "captureModal": {
+      "title": "Add Pokémon to Pokédex"
+    },
     "sortBy": "Sort by",
     "filter": {
-      "title": "Filters",
-      "of": "of",
-      "loading": "Loading...",
-      "clearAll": "Clear all filters",
-      "search": "Search",
-      "searchPlaceholder": "Search by name, type or region...",
-      "type": "Type",
+      "search": "Search Pokémon...",
+      "pokemonType": "Pokémon Type",
       "allTypes": "All types",
       "region": "Region",
       "allRegions": "All regions",
       "generation": "Generation",
-      "allGenerations": "All generations"
+      "allGenerations": "All generations",
+      "apply": "Apply"
     },
     "sort": {
       "captureDate": "Capture date",
@@ -67,32 +71,45 @@
       "descending": "Descending"
     },
     "card": {
-      "level": "Lv.",
+      "level": "Lvl.",
       "noImage": "No image",
       "attack": "ATK",
       "defense": "DEF",
       "speed": "SPD",
-      "captured": "Captured",
-      "exp": "EXP",
-      "gen": "Gen",
-      "noPokemon": "No Pokémon"
+      "types": "Types:"
     },
     "loading": {
       "title": "Loading Pokédex...",
-      "description": "Getting your Pokémon collection"
+      "description": "Preparing your captured Pokémon"
     },
     "empty": {
-      "title": "Empty Pokédex",
-      "description": "You haven't caught any Pokémon yet. Go explore!"
+      "title": "Your Pokédex is empty",
+      "description": "Go explore and catch some Pokémon!"
     },
     "noResults": {
-      "title": "No Pokémon found",
-      "description": "There are no Pokémon matching these search criteria",
+      "title": "No Pokémon found with these criteria",
+      "description": "Try changing the filters to find more Pokémon",
       "clearFilters": "Clear filters"
     },
     "pagination": {
       "previous": "Previous",
-      "next": "Next"
+      "next": "Next",
+      "showing": "Showing",
+      "of": "of"
+    },
+    "pokemon": {
+      "image": "Image",
+      "name": "Name",
+      "level": "Level",
+      "attack": "Attack",
+      "defense": "Defense",
+      "speed": "Speed",
+      "types": "Types",
+      "status": "Status",
+      "captured": "Captured",
+      "available": "Available",
+      "selected": "selected",
+      "addSelected": "Add selected"
     },
     "types": {
       "normal": "Normal",
@@ -124,5 +141,10 @@
       "alola": "Alola",
       "galar": "Galar"
     }
+  },
+  "common": {
+    "cancel": "Cancel",
+    "accept": "Accept",
+    "save": "Save"
   }
 }

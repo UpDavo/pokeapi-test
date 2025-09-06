@@ -1,16 +1,18 @@
 @if (pokemon) {
-<div class="card bg-white border border-gray-200 hover:shadow-lg transition-shadow duration-200">
-  <div class="card-body p-4">
+<p-card styleClass="hover:shadow-lg transition-shadow duration-200 h-full">
+  <ng-template pTemplate="content">
     <!-- Header con nombre y ID -->
     <div class="flex justify-between items-start mb-3">
       <div>
-        <h3 class="font-bold text-lg text-black capitalize">{{ pokemon.name }}</h3>
+        <h3 class="font-bold text-lg text-gray-800 capitalize">{{ pokemon.name }}</h3>
         <p class="text-sm text-gray-500">#{{ pokemon.id.toString().padStart(3, '0') }}</p>
       </div>
       @if (showLevel && pokemon.level) {
-      <div class="badge badge-primary badge-sm">
-        {{ 'pokedex.card.level' | translate }} {{ pokemon.level }}
-      </div>
+      <p-badge 
+        [value]="'Niv ' + pokemon.level" 
+        severity="info"
+        styleClass="text-xs"
+      ></p-badge>
       }
     </div>
 
@@ -34,9 +36,11 @@
     @if (pokemon.types && pokemon.types.length) {
     <div class="flex flex-wrap gap-1 mb-3 justify-center">
       @for (type of pokemon.types; track type) {
-      <span class="badge badge-sm" [class]="getTypeStyle(type)">
-        {{ 'pokedex.types.' + type | translate }}
-      </span>
+      <p-tag
+        [value]="'pokedex.types.' + type | translate"
+        [severity]="getTypeSeverity(type)"
+        styleClass="text-xs"
+      ></p-tag>
       }
     </div>
     }
@@ -73,26 +77,32 @@
     </div>
     }
 
-    <!-- Región/Generación (si están disponibles) -->
+    <!-- Región/Generación -->
     @if (pokemon.region || pokemon.generation) {
     <div class="flex justify-center gap-2 mt-2">
       @if (pokemon.region) {
-      <span class="badge badge-outline badge-xs">
-        {{ 'pokedex.regions.' + pokemon.region | translate }}
-      </span>
+      <p-tag
+        [value]="'pokedex.regions.' + pokemon.region | translate"
+        severity="secondary"
+        styleClass="text-xs"
+      ></p-tag>
       } @if (pokemon.generation) {
-      <span class="badge badge-outline badge-xs">
-        {{ 'pokedex.card.gen' | translate }} {{ pokemon.generation }}
-      </span>
+      <p-tag
+        [value]="('pokedex.card.gen' | translate) + ' ' + pokemon.generation"
+        severity="secondary"
+        styleClass="text-xs"
+      ></p-tag>
       }
     </div>
     }
-  </div>
-</div>
+  </ng-template>
+</p-card>
 } @else {
-<div class="card bg-gray-50 border border-gray-200">
-  <div class="card-body p-4 text-center">
-    <div class="text-gray-400">{{ 'pokedex.card.noPokemon' | translate }}</div>
-  </div>
-</div>
+<p-card styleClass="bg-gray-50">
+  <ng-template pTemplate="content">
+    <div class="text-center text-gray-400">
+      {{ 'pokedex.card.noPokemon' | translate }}
+    </div>
+  </ng-template>
+</p-card>
 }

@@ -7,10 +7,28 @@ import { PokemonService } from '../../services/pokemon.service';
 import { CapturedPokemon } from '../../interfaces/pokemon.interface';
 import { PokemonCard } from './components/pokemon-card/pokemon-card';
 import { PokemonFilter, FilterOptions } from './components/pokemon-filter/pokemon-filter';
+import { CaptureModal } from './components/capture-modal/capture-modal';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { PaginatorModule } from 'primeng/paginator';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-pokedex',
-  imports: [CommonModule, FormsModule, TranslateModule, PokemonCard, PokemonFilter],
+  imports: [
+    CommonModule,
+    FormsModule,
+    TranslateModule,
+    PokemonCard,
+    PokemonFilter,
+    CaptureModal,
+    CardModule,
+    ButtonModule,
+    ProgressSpinnerModule,
+    PaginatorModule,
+    SelectModule,
+  ],
   templateUrl: './pokedex.html',
 })
 export class Pokedex implements OnInit, OnDestroy {
@@ -18,9 +36,10 @@ export class Pokedex implements OnInit, OnDestroy {
   private cdr = inject(ChangeDetectorRef);
   private destroy$ = new Subject<void>();
 
-  // Estados de carga
-  isLoading = true;
+  // Estado de UI
+  isLoading = false;
   isFiltering = false;
+  showCaptureModal = false;
 
   // Datos principales
   allPokemon: CapturedPokemon[] = [];
@@ -35,14 +54,24 @@ export class Pokedex implements OnInit, OnDestroy {
   // Filtros activos
   activeFilters: FilterOptions = {
     search: '',
-    type: '',
-    region: '',
-    generation: '',
+    types: [],
+    regions: [],
+    generations: [],
   };
 
   // Ordenamiento
   sortBy: 'name' | 'level' | 'capturedAt' | 'atk' | 'def' | 'spd' = 'capturedAt';
   sortOrder: 'asc' | 'desc' = 'desc';
+
+  // Opciones de ordenamiento para PrimeNG
+  sortOptions = [
+    { label: '', value: 'capturedAt' },
+    { label: '', value: 'name' },
+    { label: '', value: 'level' },
+    { label: '', value: 'atk' },
+    { label: '', value: 'def' },
+    { label: '', value: 'spd' },
+  ];
 
   // Estadísticas
   get totalCount(): number {
@@ -64,9 +93,9 @@ export class Pokedex implements OnInit, OnDestroy {
   get hasActiveFilters(): boolean {
     return !!(
       this.activeFilters.search ||
-      this.activeFilters.type ||
-      this.activeFilters.region ||
-      this.activeFilters.generation
+      this.activeFilters.types.length > 0 ||
+      this.activeFilters.regions.length > 0 ||
+      this.activeFilters.generations.length > 0
     );
   }
 
@@ -121,9 +150,9 @@ export class Pokedex implements OnInit, OnDestroy {
   onClearFilters(): void {
     this.activeFilters = {
       search: '',
-      type: '',
-      region: '',
-      generation: '',
+      types: [],
+      regions: [],
+      generations: [],
     };
     this.currentPage = 1;
     this.applyFiltersAndSort();
@@ -175,18 +204,21 @@ export class Pokedex implements OnInit, OnDestroy {
         }
       }
 
-      // Filtro por tipo
-      if (filters.type && !p.types.includes(filters.type)) {
+      // Filtro por tipos (múltiples)
+      if (filters.types.length > 0 && !filters.types.some((type) => p.types.includes(type))) {
         return false;
       }
 
-      // Filtro por región
-      if (filters.region && p.region !== filters.region) {
+      // Filtro por regiones (múltiples)
+      if (filters.regions.length > 0 && (!p.region || !filters.regions.includes(p.region))) {
         return false;
       }
 
-      // Filtro por generación
-      if (filters.generation && p.generation !== filters.generation) {
+      // Filtro por generaciones (múltiples)
+      if (
+        filters.generations.length > 0 &&
+        (!p.generation || !filters.generations.includes(p.generation))
+      ) {
         return false;
       }
 
@@ -248,6 +280,14 @@ export class Pokedex implements OnInit, OnDestroy {
     }
   }
 
+  onPaginatorChange(event: any): void {
+    const page = event.first / event.rows + 1;
+    this.currentPage = page;
+    this.pageSize = event.rows;
+    this.applyPagination();
+    this.cdr.markForCheck();
+  }
+
   get paginationInfo(): string {
     if (this.filteredPokemon.length === 0) return '';
 
@@ -276,7 +316,18 @@ export class Pokedex implements OnInit, OnDestroy {
 
   /** ====== Métodos públicos ====== */
   async refreshPokedex(): Promise<void> {
-    await this.loadPokemon();
+    this.showCaptureModal = true;
+  }
+
+  onCaptureModalClose(): void {
+    this.showCaptureModal = false;
+  }
+
+  onPokemonCaptured(pokemon: CapturedPokemon[]): void {
+    console.log(`${pokemon.length} Pokémon capturados:`, pokemon);
+    // Refrescar los datos
+    this.loadPokemon();
+    this.showCaptureModal = false;
   }
 
   trackByPokemonId(index: number, pokemon: CapturedPokemon): number {

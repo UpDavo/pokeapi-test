@@ -6,13 +6,24 @@ import { CapturedPokemon, PokemonMetrics } from '../../interfaces/pokemon.interf
 import { StatCard } from './components/stat-card/stat-card';
 import { RecomendedPokemonCard } from './components/recomended-pokemon-card/recomended-pokemon-card';
 import { MyPokemonCard } from './components/my-pokemon-card/my-pokemon-card';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 const TIME_LEFT = 10 * 60 * 1000;
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [TranslateModule, StatCard, RecomendedPokemonCard, MyPokemonCard],
+  imports: [
+    TranslateModule,
+    StatCard,
+    RecomendedPokemonCard,
+    MyPokemonCard,
+    CardModule,
+    ButtonModule,
+    ProgressSpinnerModule,
+  ],
   templateUrl: './home.html',
 })
 export class Home implements OnInit, OnDestroy {

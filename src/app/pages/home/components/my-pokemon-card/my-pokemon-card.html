@@ -1,18 +1,26 @@
-<div class="card bg-base-200 rounded-xl p-4 flex items-center gap-3">
-  <img
-    [src]="pokemon.sprite"
-    [alt]="pokemon.name"
-    class="w-16 h-16 object-contain rounded-lg border"
-  />
-  <div class="flex-1">
-    <h3 class="font-semibold capitalize">
-      {{ pokemon.name }} <span class="opacity-60">Lv {{ pokemon.level }}</span>
-    </h3>
-    <p class="text-xs opacity-70">ATK {{ pokemon.atk }} • DEF {{ pokemon.def }} • SPD {{ pokemon.spd }}</p>
-    <div class="mt-1 flex flex-wrap gap-1">
-      @for (type of pokemon.types; track type) {
-        <span class="badge badge-outline text-xs">{{ type }}</span>
-      }
+<p-card styleClass="h-full">
+  <ng-template pTemplate="content">
+    <div class="flex items-center gap-3">
+      <img
+        [src]="pokemon.sprite"
+        [alt]="pokemon.name"
+        class="w-16 h-16 object-contain rounded-lg border"
+      />
+      <div class="flex-1">
+        <h3 class="font-semibold capitalize text-gray-800 mb-1">
+          {{ pokemon.name }} <span class="text-gray-500">Lv {{ pokemon.level }}</span>
+        </h3>
+        <p class="text-xs text-gray-600 mb-2">ATK {{ pokemon.atk }} • DEF {{ pokemon.def }} • SPD {{ pokemon.spd }}</p>
+        <div class="flex flex-wrap gap-1">
+          @for (type of pokemon.types; track type) {
+            <p-tag
+              [value]="type"
+              [severity]="getTypeSeverity(type)"
+              styleClass="text-xs"
+            ></p-tag>
+          }
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+  </ng-template>
+</p-card>

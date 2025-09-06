@@ -1,5 +1,44 @@
 @import 'tailwindcss';
 @source "./public/*.{html,js}";
-@plugin "daisyui" {
-  themes: dark --default;
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: "poketheme";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: #fff;
+  --color-base-content: #000;
+  --color-primary: #412AD5;
+  --color-primary-content: #fff;
+  --color-secondary: #0e0e0e;
+  --color-secondary-content: #fff;
+  --color-accent: #FBBF24;
+  --color-accent-content: #000;
+  --color-neutral: #7C7C7C;
+  --color-neutral-content: #fff;
+  --color-info: #3B82F6;
+  --color-info-content: #fff;
+  --color-success: #4CAF50;
+  --color-success-content: #fff;
+  --color-warning: #FBBF24;
+  --color-warning-content: #000;
+  --color-error: #EF4444;
+  --color-error-content: #fff;
+
+  /* border radius */
+  --radius-selector: 1rem;
+  --radius-field: 1rem;
+  --radius-box: 0.5rem;
+
+  /* base sizes */
+  --size-selector: 1rem;
+  --size-field: 0.25rem;
+
+  /* border size */
+  --border: 1px;
+
+  /* effects */
+  --depth: 1;
+  --noise: 0;
 }

@@ -1,55 +1,51 @@
-<div class="bg-white border border-gray-200 rounded-xl p-4 flex items-start gap-4 relative mb-4">
-  <!-- Imagen -->
-  <img
-    [src]="pokemon.sprite"
-    [alt]="pokemon.name"
-    class="w-24 h-24 object-contain rounded-lg border"
-  />
+<p-card styleClass="mb-4 relative">
+  <ng-template pTemplate="content">
+    <div class="flex items-start gap-4">
+      <!-- Imagen -->
+      <img
+        [src]="pokemon.sprite"
+        [alt]="pokemon.name"
+        class="w-24 h-24 object-contain rounded-lg border"
+      />
 
-  <!-- Contenido -->
-  <div class="flex-1 space-y-1">
-    <!-- Nombre + Tipos -->
-    <div class="grid grid-cols-1 items-center">
-      <h3 class="font-bold capitalize text-black">{{ pokemon.name }}</h3>
-      <div class="">
-        @for (type of pokemon.types; track type) {
-        <span
-          class="text-xs font-medium text-white px-2 py-0.5 rounded-md uppercase mr-1"
-          [ngClass]="{
-            'bg-green-500': type === 'grass' || type === 'bug',
-            'bg-yellow-500': type === 'electric' || type === 'psychic',
-            'bg-blue-500': type === 'water' || type === 'ice',
-            'bg-red-500': type === 'fire' || type === 'fighting' || type === 'dragon',
-            'bg-gray-500': type === 'rock' || type === 'steel' || type === 'ground',
-            'bg-purple-500': type === 'ghost' || type === 'poison' || type === 'dark',
-            'bg-pink-500': type === 'fairy',
-            'bg-slate-400': type === 'normal'
-          }"
-        >
-          {{ type }}
-        </span>
-        }
+      <!-- Contenido -->
+      <div class="flex-1 space-y-2">
+        <!-- Nombre + Tipos -->
+        <div>
+          <h3 class="font-bold capitalize text-gray-800 mb-2">{{ pokemon.name }}</h3>
+          <div class="flex flex-wrap gap-1 mb-2">
+            @for (type of pokemon.types; track type) {
+              <p-tag
+                [value]="type"
+                [severity]="getTypeSeverity(type)"
+                styleClass="text-xs uppercase"
+              ></p-tag>
+            }
+          </div>
+        </div>
+
+        <!-- Info principal -->
+        <div class="text-xs text-gray-600 flex flex-wrap gap-4">
+          <span>{{ 'home.regionLabel' | translate }} {{ pokemon.region || ('home.noData' | translate) }}</span>
+          <span>{{ 'home.generationLabel' | translate }} {{ pokemon.generation || 'N/A' }}</span>
+          <span>{{ 'home.experienceLabel' | translate }} {{ pokemon.baseExperience }}</span>
+          <span>{{ 'home.powerLabel' | translate }} {{ pokemon.bst }}</span>
+        </div>
+
+        <!-- Stats -->
+        <div class="text-xs text-gray-600 flex flex-wrap gap-3">
+          <span>{{ 'pokedex.card.attack' | translate }} {{ pokemon.atk }}</span>
+          <span>{{ 'pokedex.card.defense' | translate }} {{ pokemon.def }}</span>
+          <span>{{ 'pokedex.card.speed' | translate }} {{ pokemon.spd }}</span>
+        </div>
       </div>
-    </div>
 
-    <!-- Info principal -->
-    <div class="text-xs text-black flex flex-wrap gap-4">
-      <span>Región: {{ pokemon.region || 'Sin datos' }}</span>
-      <span>Gen: {{ pokemon.generation || 'N/A' }}</span>
-      <span>Exp {{ pokemon.baseExperience }}</span>
-      <span>Poder {{ pokemon.bst }}</span>
+      <!-- Número en la esquina -->
+      <p-badge 
+        [value]="'#' + pokemon.id" 
+        severity="contrast"
+        styleClass="absolute top-2 right-2"
+      ></p-badge>
     </div>
-
-    <!-- Stats -->
-    <div class="text-xs text-black flex flex-wrap gap-2 mt-5">
-      <span>ATK {{ pokemon.atk }}</span>
-      <span>DEF {{ pokemon.def }}</span>
-      <span>SPD {{ pokemon.spd }}</span>
-    </div>
-  </div>
-
-  <!-- Número en la esquina -->
-  <div class="absolute top-2 right-2 bg-black text-white text-xs px-2 py-0.5 rounded-full">
-    #{{ pokemon.id }}
-  </div>
-</div>
+  </ng-template>
+</p-card>

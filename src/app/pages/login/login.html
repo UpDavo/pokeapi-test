@@ -1,57 +1,72 @@
-<div class="flex min-h-screen items-center justify-center bg-black text-white px-6">
+<div class="flex min-h-screen items-center justify-center bg-secondary text-white px-6">
   <!-- Contenedor principal: 2 columnas -->
   <div class="flex flex-col md:flex-row items-center gap-16">
     <!-- Card -->
-    <div class="card bg-stone-700 w-full max-w-md md:w-[32rem] mx-auto shadow-xl rounded-xl">
-      <div class="card-body">
-        <h2 class="text-center text-xl font-bold mb-4">Inicia sesión</h2>
+    <p-card class="w-full max-w-md md:w-[32rem] mx-auto shadow-xl">
+      <ng-template pTemplate="header">
+        <div class="text-center mt-10">
+          <h2 class="text-xl font-bold text-white mb-2">Inicia sesión</h2>
+        </div>
+      </ng-template>
 
+      <ng-template pTemplate="content">
         <!-- Formulario -->
-        <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 gap-3">
-          <input
-            type="email"
-            formControlName="email"
-            class="input input-bordered rounded-full col-span-1 w-full"
-            placeholder="usuario@dominio.com *"
-          />
-
-          <input
-            type="password"
-            formControlName="password"
-            class="input input-bordered rounded-full col-span-1 w-full"
-            placeholder="•••••••• *"
-          />
-
-          <label class="col-span-1 cursor-pointer text-white flex items-center gap-2">
+        <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
+          <div class="field">
+            <label for="email" class="block text-sm font-medium text-white mb-1">Email</label>
             <input
-              type="checkbox"
-              formControlName="remember"
-              class="checkbox checkbox-primary checkbox-sm"
+              id="email"
+              type="email"
+              pInputText
+              formControlName="email"
+              placeholder="usuario@dominio.com"
+              class="w-full"
             />
-            <span>Recordar contraseña</span>
-          </label>
+          </div>
 
-          <button
+          <div class="field">
+            <label for="password" class="block text-sm font-medium text-white mb-1"
+              >Contraseña</label
+            >
+            <p-password
+              id="password"
+              formControlName="password"
+              placeholder="••••••••"
+              [toggleMask]="true"
+              [feedback]="false"
+              styleClass="w-full"
+              inputStyleClass="w-full"
+            ></p-password>
+          </div>
+
+          <div class="field-checkbox flex items-center gap-2">
+            <p-checkbox formControlName="remember" inputId="remember" [binary]="true"></p-checkbox>
+            <label for="remember" class="text-sm font-medium text-white cursor-pointer">
+              Recordar contraseña
+            </label>
+          </div>
+
+          <p-button
             type="submit"
+            label="Iniciar sesión"
             [disabled]="form.invalid"
-            class="btn btn-primary rounded-full col-span-1 mt-2"
-          >
-            Iniciar sesión
-          </button>
+            styleClass="w-full"
+            size="small"
+          ></p-button>
         </form>
 
         @if (errorMessage) {
-        <div class="text-red-400 text-sm mt-2 text-center">
-          {{ errorMessage }}
-        </div>
+        <p-message severity="error" [text]="errorMessage" styleClass="w-full mt-3"></p-message>
         }
 
-        <div class="text-center text-sm mt-3">
+        <div class="text-center text-sm mt-4 text-white">
           Si no tienes una cuenta
-          <a routerLink="/register" class="link link-hover">regístrate aquí</a>.
+          <a routerLink="/register" class="text-blue-600 hover:text-blue-800 no-underline"
+            >regístrate aquí</a
+          >.
         </div>
-      </div>
-    </div>
+      </ng-template>
+    </p-card>
 
     <!-- Texto lateral -->
     <div class="hidden md:flex flex-col items-start ml-16 text-white">

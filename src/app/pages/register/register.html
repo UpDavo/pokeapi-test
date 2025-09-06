@@ -1,101 +1,133 @@
-<div class="flex min-h-screen items-center justify-center bg-black text-white px-6">
+<div class="flex min-h-screen items-center justify-center bg-secondary text-white px-6">
   <!-- Contenedor principal: 2 columnas -->
   <div class="flex flex-col md:flex-row items-center gap-16">
     <!-- Card -->
-    <div class="card bg-stone-700 w-full max-w-md md:w-[32rem] mx-auto shadow-xl rounded-xl">
-      <div class="card-body">
-        <h2 class="text-center text-xl font-bold mb-4">Registro</h2>
-
+    <p-card  class="w-full max-w-2xl mx-auto shadow-xl">
+      <ng-template pTemplate="header">
+        <div class="text-center mt-10">
+          <h2 class="text-xl font-bold text-white mb-2">Registro</h2>
+        </div>
+      </ng-template>
+      
+      <ng-template pTemplate="content">
         <!-- Loading -->
         @if (isLoading) {
-        <div class="text-center">
-          <span class="loading loading-dots loading-lg"></span>
-          <p class="mt-2">Cuenta registrada correctamente. Redirigiendo al login...</p>
+        <div class="text-center py-8">
+          <p-progressSpinner 
+            styleClass="w-16 h-16" 
+            strokeWidth="4"
+            fill="transparent"
+            animationDuration="1s">
+          </p-progressSpinner>
+          <p class="mt-4 text-white">Cuenta registrada correctamente. Redirigiendo al login...</p>
         </div>
         } @else {
         <!-- Formulario -->
         <form
           [formGroup]="form"
           (ngSubmit)="submit()"
-          class="grid grid-cols-1 md:grid-cols-2 gap-3"
+          class="grid grid-cols-1 md:grid-cols-2 gap-4"
         >
-          <div class="col-span-1">
+          <div class="field">
+            <label for="firstName" class="block text-sm font-medium text-white mb-1">Nombre *</label>
             <input
+              id="firstName"
               type="text"
+              pInputText
               formControlName="firstName"
-              placeholder="Nombre *"
-              class="input input-bordered rounded-full w-full"
+              placeholder="Nombre"
+              class="w-full"
             />
             @if (form.get('firstName')?.invalid && form.get('firstName')?.touched) {
-            <div class="text-red-500 text-sm mt-1">
+            <small class="text-red-500 block mt-1">
               @if (form.get('firstName')?.errors?.['required']) {
               <span>Nombre es requerido.</span>
               }
-            </div>
+            </small>
             }
           </div>
 
-          <div class="col-span-1">
+          <div class="field">
+            <label for="lastName" class="block text-sm font-medium text-white mb-1">Apellido *</label>
             <input
+              id="lastName"
               type="text"
+              pInputText
               formControlName="lastName"
-              placeholder="Apellido *"
-              class="input input-bordered rounded-full w-full"
+              placeholder="Apellido"
+              class="w-full"
             />
             @if (form.get('lastName')?.invalid && form.get('lastName')?.touched) {
-            <div class="text-red-500 text-sm mt-1">
+            <small class="text-red-500 block mt-1">
               @if (form.get('lastName')?.errors?.['required']) {
               <span>Apellido es requerido.</span>
               }
-            </div>
+            </small>
             }
           </div>
 
-          <div class="col-span-1">
+          <div class="field">
+            <label for="email" class="block text-sm font-medium text-white mb-1">Correo *</label>
             <input
+              id="email"
               type="email"
+              pInputText
               formControlName="email"
-              placeholder="Correo *"
-              class="input input-bordered rounded-full w-full"
+              placeholder="correo@ejemplo.com"
+              class="w-full"
             />
             @if (form.get('email')?.invalid && form.get('email')?.touched) {
-            <div class="text-red-500 text-sm mt-1">
+            <small class="text-red-500 block mt-1">
               @if (form.get('email')?.errors?.['required']) {
               <span>Correo es requerido.</span>
               } @if (form.get('email')?.errors?.['email']) {
               <span>Formato de correo inválido.</span>
               }
-            </div>
+            </small>
             }
           </div>
 
-          <div class="col-span-1">
+          <div class="field">
+            <label for="phone" class="block text-sm font-medium text-white mb-1">Teléfono</label>
             <input
+              id="phone"
               type="text"
+              pInputText
               formControlName="phone"
               placeholder="Teléfono"
-              class="input input-bordered rounded-full w-full"
+              class="w-full"
             />
           </div>
 
-          <div class="col-span-1">
+          <div class="field">
+            <label for="city" class="block text-sm font-medium text-white mb-1">Ciudad</label>
             <input
+              id="city"
               type="text"
+              pInputText
               formControlName="city"
               placeholder="Ciudad"
-              class="input input-bordered rounded-full w-full"
+              class="w-full"
             />
           </div>
 
-          <div class="col-span-1">
-            <input
-              type="password"
+          <div class="field">
+            <label for="password" class="block text-sm font-medium text-white mb-1">Contraseña *</label>
+            <p-password
+              id="password"
               formControlName="password"
-              placeholder="Contraseña *"
-              class="input input-bordered rounded-full w-full"
-            />
+              placeholder="Contraseña"
+              [toggleMask]="true"
+              [feedback]="true"
+              styleClass="w-full"
+              inputStyleClass="w-full"
+              promptLabel="Ingresa tu contraseña"
+              weakLabel="Débil"
+              mediumLabel="Medio"
+              strongLabel="Fuerte"
+            ></p-password>
             @if (form.get('password')?.invalid && form.get('password')?.touched) {
-            <div class="text-red-500 text-sm mt-1">
+            <small class="text-red-500 block mt-1">
               @if (form.get('password')?.errors?.['required']) {
               <span>Contraseña es requerida.</span>
               } @if (form.get('password')?.errors?.['invalidPassword']) {
@@ -104,45 +136,51 @@
                 número.
               </span>
               }
-            </div>
+            </small>
             }
           </div>
 
-          <div class="col-span-1">
-            <input
-              type="password"
+          <div class="field">
+            <label for="confirmPassword" class="block text-sm font-medium text-white mb-1">Confirmar Contraseña *</label>
+            <p-password
+              id="confirmPassword"
               formControlName="confirmPassword"
-              placeholder="Confirma Contraseña *"
-              class="input input-bordered rounded-full w-full"
-            />
+              placeholder="Confirma tu contraseña"
+              [toggleMask]="true"
+              [feedback]="false"
+              styleClass="w-full"
+              inputStyleClass="w-full"
+            ></p-password>
             @if (form.get('confirmPassword')?.invalid && form.get('confirmPassword')?.touched) {
-            <div class="text-red-500 text-sm mt-1">
+            <small class="text-red-500 block mt-1">
               @if (form.get('confirmPassword')?.errors?.['required']) {
               <span>Confirmación de contraseña es requerida.</span>
               } @if (form.get('confirmPassword')?.errors?.['passwordsMismatch']) {
               <span>Las contraseñas no coinciden.</span>
               }
-            </div>
+            </small>
             }
           </div>
 
           <!-- Botón -->
-          <button
-            type="submit"
-            [disabled]="form.invalid"
-            class="btn btn-primary rounded-full col-span-1 md:col-span-2 mt-2"
-          >
-            Registrarse
-          </button>
+          <div class="col-span-1 md:col-span-2">
+            <p-button
+              type="submit"
+              label="Registrarse"
+              [disabled]="form.invalid"
+              styleClass="w-full bg-primary"
+              size="large"
+            ></p-button>
+          </div>
 
-          <div class="text-center text-sm mt-3 col-span-1 md:col-span-2">
+          <div class="text-center text-sm mt-3 col-span-1 md:col-span-2 text-white">
             Si ya tienes una cuenta
-            <a routerLink="/login" class="link link-hover">Inicia sesión aquí</a>.
+            <a routerLink="/login" class="text-blue-600 hover:text-blue-800 no-underline">Inicia sesión aquí</a>.
           </div>
         </form>
         }
-      </div>
-    </div>
+      </ng-template>
+    </p-card>
 
     <!-- Texto lateral -->
     <div class="hidden md:flex flex-col items-start text-left">

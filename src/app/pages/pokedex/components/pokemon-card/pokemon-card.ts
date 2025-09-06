@@ -2,10 +2,13 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { CapturedPokemon } from '../../../../interfaces/pokemon.interface';
+import { CardModule } from 'primeng/card';
+import { TagModule } from 'primeng/tag';
+import { BadgeModule } from 'primeng/badge';
 
 @Component({
   selector: 'app-pokemon-card',
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, CardModule, TagModule, BadgeModule],
   templateUrl: './pokemon-card.html',
 })
 export class PokemonCard {
@@ -56,5 +59,34 @@ export class PokemonCard {
 
   getTypeStyle(type: string): string {
     return this.getTypeClass(type);
+  }
+
+  getTypeSeverity(
+    type: string
+  ): 'success' | 'info' | 'warning' | 'danger' | 'secondary' | 'contrast' | undefined {
+    const typeColors: Record<
+      string,
+      'success' | 'info' | 'warning' | 'danger' | 'secondary' | 'contrast'
+    > = {
+      grass: 'success',
+      bug: 'success',
+      water: 'info',
+      ice: 'info',
+      electric: 'warning',
+      psychic: 'warning',
+      fire: 'danger',
+      fighting: 'danger',
+      dragon: 'danger',
+      rock: 'secondary',
+      steel: 'secondary',
+      ground: 'secondary',
+      ghost: 'contrast',
+      poison: 'contrast',
+      dark: 'contrast',
+      fairy: 'info',
+      normal: 'secondary',
+    };
+
+    return typeColors[type] || 'secondary';
   }
 }

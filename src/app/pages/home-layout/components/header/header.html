@@ -1,165 +1,123 @@
-<div class="drawer">
-  <input id="mobile-drawer" type="checkbox" class="drawer-toggle" #drawer />
+<!-- Header con PrimeNG -->
+<div class="bg-secondary shadow-sm">
+  <!-- Desktop Header -->
+  <div class="hidden lg:block bg-secondary">
+    <p-menubar [model]="primeMenuItems" styleClass="bg-secondary border-none">
+      <ng-template pTemplate="start">
+        <span class="text-lg font-bold text-white mr-8">PokéTrainer</span>
+      </ng-template>
 
-  <!-- Contenido principal -->
-  <div class="drawer-content">
-    <div class="navbar bg-base-100 shadow-sm">
-      <!-- 👈 Logo + menú horizontal -->
-      <div class="navbar-start gap-4">
-        <!-- Hamburguesa solo en mobile -->
-        <label for="mobile-drawer" class="btn btn-ghost lg:hidden drawer-button">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </label>
+      <ng-template pTemplate="end">
+        <div class="flex items-center gap-4">
+          <!-- Menú de idioma -->
+          <p-button
+            [label]="'menu.language' | translate"
+            icon="pi pi-globe"
+            [text]="true"
+            styleClass="text-white hover:bg-gray-700"
+            #languageBtn
+            (click)="languageMenu.toggle($event)"
+          ></p-button>
+          <p-menu #languageMenu [popup]="true" [model]="languageMenuItems"></p-menu>
 
-        <!-- Logo -->
-        <a class="btn btn-ghost normal-case text-xl">PokéTrainer</a>
-
-        <!-- Menú horizontal desktop -->
-        <ul class="menu menu-horizontal gap-2 px-1 hidden lg:flex">
-          @for (item of menu; track item) {
-          <li>
-            @if (item.children?.length) {
-            <details>
-              <summary>{{ item.label | translate }}</summary>
-              <ul class="p-2 bg-base-100">
-                @for (c of item.children; track c) {
-                <li>
-                  <a
-                    [routerLink]="c.link"
-                    routerLinkActive="bg-gray-200 text-black"
-                    [routerLinkActiveOptions]="{ exact: true }"
-                  >
-                    {{ c.label | translate }}
-                  </a>
-                </li>
-                }
-              </ul>
-            </details>
-            } @else {
-            <a
-              [routerLink]="item.link"
-              routerLinkActive="bg-gray-200 text-black"
-              [routerLinkActiveOptions]="{ exact: true }"
-            >
-              {{ item.label | translate }}
-            </a>
-            }
-          </li>
-          }
-        </ul>
-      </div>
-
-      <!-- 👈 Idioma + avatar a la derecha -->
-      <div class="navbar-end gap-4 hidden lg:flex">
-        <!-- Idioma -->
-        <div class="dropdown dropdown-end">
-          <div tabindex="0" role="button" class="btn btn-ghost">
-            {{ 'menu.language' | translate }}
-          </div>
-          <ul
-            tabindex="0"
-            class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-40 p-2 shadow"
-          >
-            <li><a (click)="switchLang('es')">Español 🇪🇸</a></li>
-            <li><a (click)="switchLang('en')">English 🇺🇸</a></li>
-          </ul>
+          <!-- Avatar con menú -->
+          <p-avatar
+            image="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+            shape="circle"
+            size="normal"
+            styleClass="cursor-pointer hover:opacity-80"
+            #userBtn
+            (click)="userMenu.toggle($event)"
+          ></p-avatar>
+          <p-menu #userMenu [popup]="true" [model]="userMenuItems"></p-menu>
         </div>
-
-        <!-- Avatar -->
-        <div class="dropdown dropdown-end">
-          <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-            <div class="w-10 rounded-full">
-              <img
-                alt="User avatar"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-              />
-            </div>
-          </div>
-          <ul
-            tabindex="0"
-            class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-          >
-            <li>
-              <a>{{ 'menu.profile' | translate }}</a>
-            </li>
-            <li>
-              <a>{{ 'menu.settings' | translate }}</a>
-            </li>
-            <li>
-              <a (click)="logout()">{{ 'menu.logout' | translate }}</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+      </ng-template>
+    </p-menubar>
   </div>
 
-  <!-- Drawer lateral solo mobile -->
-  <div class="drawer-side">
-    <label for="mobile-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
-    <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-      @for (item of menu; track item) {
-      <li>
-        @if (item.children?.length) {
-        <details>
-          <summary>{{ item.label | translate }}</summary>
-          <ul class="p-2">
-            @for (c of item.children; track c) {
-            <li>
-              <a
-                [routerLink]="c.link"
-                routerLinkActive="bg-gray-200 text-black"
-                [routerLinkActiveOptions]="{ exact: true }"
-                (click)="drawer.checked = false"
-              >
-                {{ c.label | translate }}
-              </a>
-            </li>
-            }
-          </ul>
-        </details>
-        } @else {
-        <a
-          [routerLink]="item.link"
-          routerLinkActive="bg-gray-200 text-black"
-          [routerLinkActiveOptions]="{ exact: true }"
-          (click)="drawer.checked = false"
-        >
-          {{ item.label | translate }}
-        </a>
-        }
-      </li>
-      }
+  <!-- Mobile Header -->
+  <div class="lg:hidden flex items-center justify-between p-4">
+    <!-- Hamburger button -->
+    <p-button
+      icon="pi pi-bars"
+      [text]="true"
+      styleClass="text-white"
+      (click)="toggleSidebar()"
+    ></p-button>
 
-      <li><hr /></li>
-      <!-- Idioma en mobile -->
-      <li><a (click)="switchLang('es'); drawer.checked = false">Español 🇪🇸</a></li>
-      <li><a (click)="switchLang('en'); drawer.checked = false">English 🇺🇸</a></li>
+    <!-- Logo -->
+    <span class="text-lg font-bold text-white">PokéTrainer</span>
 
-      <li><hr /></li>
-      <!-- Avatar en mobile -->
-      <li>
-        <a>{{ 'menu.profile' | translate }}</a>
-      </li>
-      <li>
-        <a>{{ 'menu.settings' | translate }}</a>
-      </li>
-      <li>
-        <a (click)="logout(); drawer.checked = false">{{ 'menu.logout' | translate }}</a>
-      </li>
-    </ul>
+    <!-- Avatar móvil -->
+    <p-avatar
+      image="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+      shape="circle"
+      size="normal"
+      styleClass="cursor-pointer"
+      #userBtnMobile
+      (click)="userMenuMobile.toggle($event)"
+    ></p-avatar>
+    <p-menu #userMenuMobile [popup]="true" [model]="userMenuItems"></p-menu>
   </div>
 </div>
+
+<!-- Mobile Sidebar -->
+<p-drawer [(visible)]="sidebarVisible" position="left" styleClass="w-80">
+  <ng-template pTemplate="header">
+    <span class="text-lg font-bold">PokéTrainer</span>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="flex flex-col gap-2 p-4">
+      <!-- Menú de navegación -->
+      @for (item of menu; track item) {
+      <p-button
+        [label]="item.label | translate"
+        [routerLink]="item.link"
+        [text]="true"
+        styleClass="justify-start text-left w-full"
+        (click)="sidebarVisible = false"
+      ></p-button>
+      }
+
+      <hr class="my-4" />
+
+      <!-- Idiomas -->
+      <p-button
+        label="Español 🇪🇸"
+        [text]="true"
+        styleClass="justify-start text-left w-full"
+        (click)="switchLang('es'); sidebarVisible = false"
+      ></p-button>
+      <p-button
+        label="English 🇺🇸"
+        [text]="true"
+        styleClass="justify-start text-left w-full"
+        (click)="switchLang('en'); sidebarVisible = false"
+      ></p-button>
+
+      <hr class="my-4" />
+
+      <!-- Opciones de usuario -->
+      <p-button
+        [label]="'menu.profile' | translate"
+        icon="pi pi-user"
+        [text]="true"
+        styleClass="justify-start text-left w-full"
+      ></p-button>
+      <p-button
+        [label]="'menu.settings' | translate"
+        icon="pi pi-cog"
+        [text]="true"
+        styleClass="justify-start text-left w-full"
+      ></p-button>
+      <p-button
+        [label]="'menu.logout' | translate"
+        icon="pi pi-sign-out"
+        [text]="true"
+        styleClass="justify-start text-left w-full text-red-500"
+        (click)="logout(); sidebarVisible = false"
+      ></p-button>
+    </div>
+  </ng-template>
+</p-drawer>

@@ -297,15 +297,6 @@ export class PokemonService {
   /** ====== Sistema de recomendaciones ====== */
 
   /**
-   * Obtiene pokémon aleatorios fuertes para recomendaciones (sin caché)
-   */
-  async ensureTop100StrongCache(): Promise<void> {
-    // Simplemente retornamos, ya no cacheamos nada
-    // Las recomendaciones se generarán on-demand
-    return;
-  }
-
-  /**
    * Obtiene los 2 pokémon más fuertes de forma aleatoria desde la API
    */
   async getRandomTop100Recommendations(): Promise<(CapturedPokemon & { bst: number })[]> {
@@ -388,17 +379,6 @@ export class PokemonService {
   }
 
   /** ====== Utilidades ====== */
-
-  /**
-   * Genera números enteros únicos aleatorios
-   */
-  private randomUniqueInts(count: number, min: number, max: number): number[] {
-    const set = new Set<number>();
-    while (set.size < count) {
-      set.add(Math.floor(Math.random() * (max - min + 1)) + min);
-    }
-    return Array.from(set);
-  }
 
   /**
    * Obtiene una selección aleatoria de elementos de un array

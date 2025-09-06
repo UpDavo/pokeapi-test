@@ -1,1 +1,27 @@
-<p>capture-modal works!</p>
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="w-full max-w-7xl mx-4"
+  header="{{ 'pokedex.captureModal.title' | translate }}"
+  (onHide)="onClose()"
+>
+  <ng-template pTemplate="content">
+    <div class="min-h-[600px]">
+      <app-pokemon-table (pokemonAdded)="onPokemonAdded($event)"></app-pokemon-table>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-end gap-2">
+      <p-button
+        [label]="'common.cancel' | translate"
+        icon="pi pi-times"
+        [outlined]="true"
+        (click)="onClose()"
+      ></p-button>
+    </div>
+  </ng-template>
+</p-dialog>

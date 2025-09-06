@@ -12,6 +12,9 @@ import { HttpClient } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { importProvidersFrom } from '@angular/core';
 import { Observable } from 'rxjs';
+import { providePrimeNG } from 'primeng/config';
+// import Aura from '@primeuix/themes/aura';
+import Custom from './theme/custom';
 
 export class CustomTranslateLoader implements TranslateLoader {
   constructor(private http: HttpClient) {}
@@ -32,6 +35,11 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideHttpClient(withInterceptors([authInterceptor])),
+    providePrimeNG({
+      theme: {
+        preset: Custom,
+      },
+    }),
     importProvidersFrom(
       TranslateModule.forRoot({
         loader: {

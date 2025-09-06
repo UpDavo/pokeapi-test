@@ -1,85 +1,109 @@
-<div class="space-y-8">
+<div class="space-y-8 p-4">
   <!-- Bienvenida -->
-  <h1 class="text-xl font-bold text-black">{{ 'home.welcome' | translate }}</h1>
+  <h1 class="text-2xl font-bold text-gray-800">{{ 'home.welcome' | translate }}</h1>
 
   <!-- Resumen -->
-  <div class="border border-gray-200 rounded-xl p-4">
-    <h1 class="text-xl text-black font-bold mb-2">{{ 'home.summary' | translate }}</h1>
-
-    @if (isLoadingMetrics) {
-    <div class="flex items-center justify-center py-8">
-      <div class="text-center space-y-2">
-        <span class="loading loading-spinner loading-md text-primary"></span>
-        <p class="text-sm text-gray-500">{{ 'home.loadingMetrics' | translate }}</p>
+  <p-card>
+    <ng-template pTemplate="header">
+      <div class="px-6 py-4 border-b">
+        <h2 class="text-xl font-bold text-gray-800">{{ 'home.summary' | translate }}</h2>
       </div>
-    </div>
-    } @else {
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 md:grid-cols-4 gap-4">
-      <app-stat-card
-        [title]="'home.pokemonCaught' | translate"
-        [value]="capturedCount"
-        [description]="
-          ('home.of' | translate) + ' ' + (pokedexTotal || 0) + ' ' + ('home.available' | translate)
-        "
-        format="number"
-      >
-      </app-stat-card>
+    </ng-template>
 
-      <app-stat-card
-        [title]="'home.pokedex' | translate"
-        [value]="pokedexPct"
-        [description]="'home.progress' | translate"
-        format="percentage"
-      >
-      </app-stat-card>
+    <ng-template pTemplate="content">
+      @if (isLoadingMetrics) {
+      <div class="flex items-center justify-center py-8">
+        <div class="text-center space-y-4">
+          <p-progressSpinner
+            styleClass="w-12 h-12"
+            strokeWidth="4"
+            fill="transparent"
+            animationDuration="1s"
+          >
+          </p-progressSpinner>
+          <p class="text-sm text-gray-500">{{ 'home.loadingMetrics' | translate }}</p>
+        </div>
+      </div>
+      } @else {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 md:grid-cols-4 gap-4">
+        <app-stat-card
+          [title]="'home.pokemonCaught' | translate"
+          [value]="capturedCount"
+          [description]="
+            ('home.of' | translate) +
+            ' ' +
+            (pokedexTotal || 0) +
+            ' ' +
+            ('home.available' | translate)
+          "
+          format="number"
+        >
+        </app-stat-card>
 
-      <app-stat-card
-        [title]="'home.averageLevel' | translate"
-        [value]="avgLevel || 0"
-        [description]="'home.collection' | translate"
-        format="number"
-      >
-      </app-stat-card>
+        <app-stat-card
+          [title]="'home.pokedex' | translate"
+          [value]="pokedexPct"
+          [description]="'home.progress' | translate"
+          format="percentage"
+        >
+        </app-stat-card>
 
-      <app-stat-card
-        [title]="'home.favoriteType' | translate"
-        [value]="favoriteType || ('home.noData' | translate)"
-        [description]="'home.mostCollected' | translate"
-      >
-      </app-stat-card>
+        <app-stat-card
+          [title]="'home.averageLevel' | translate"
+          [value]="avgLevel || 0"
+          [description]="'home.collection' | translate"
+          format="number"
+        >
+        </app-stat-card>
 
-      <app-stat-card
-        [title]="'home.experience' | translate"
-        [value]="totalExp || 0"
-        [description]="'home.accumulatedPoints' | translate"
-        format="number"
-      >
-      </app-stat-card>
+        <app-stat-card
+          [title]="'home.favoriteType' | translate"
+          [value]="favoriteType || ('home.noData' | translate)"
+          [description]="'home.mostCollected' | translate"
+        >
+        </app-stat-card>
 
-      <app-stat-card
-        [title]="'home.strongestPokemon' | translate"
-        [value]="strongest?.name || ('home.none' | translate)"
-        [description]="strongest ? strongest.atk + ' ' + ('home.totalPower' | translate) : ''"
-      >
-      </app-stat-card>
-    </div>
-    }
-  </div>
+        <app-stat-card
+          [title]="'home.experience' | translate"
+          [value]="totalExp || 0"
+          [description]="'home.accumulatedPoints' | translate"
+          format="number"
+        >
+        </app-stat-card>
+
+        <app-stat-card
+          [title]="'home.strongestPokemon' | translate"
+          [value]="strongest?.name || ('home.none' | translate)"
+          [description]="strongest ? strongest.atk + ' ' + ('home.totalPower' | translate) : ''"
+        >
+        </app-stat-card>
+      </div>
+      }
+    </ng-template>
+  </p-card>
 
   <!-- Mis Pokémon y Recomendados -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <!-- Mis Pokémon -->
     <div>
-      <div class="card bg-white border border-gray-200">
-        <div class="card-body">
-          <div class="flex justify-between items-center mb-4">
-            <h2 class="font-bold text-lg text-black">{{ 'home.myPokemons' | translate }}</h2>
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="px-6 py-4 border-b">
+            <h2 class="font-bold text-lg text-gray-800">{{ 'home.myPokemons' | translate }}</h2>
           </div>
+        </ng-template>
 
+        <ng-template pTemplate="content">
           @if (isLoadingRecentCaptures) {
           <div class="flex items-center justify-center py-8">
-            <div class="text-center space-y-2">
-              <span class="loading loading-spinner loading-md text-primary"></span>
+            <div class="text-center space-y-4">
+              <p-progressSpinner
+                styleClass="w-12 h-12"
+                strokeWidth="4"
+                fill="transparent"
+                animationDuration="1s"
+              >
+              </p-progressSpinner>
               <p class="text-sm text-gray-500">{{ 'home.loadingPokemon' | translate }}</p>
             </div>
           </div>
@@ -90,38 +114,50 @@
             }
           </div>
           } @else {
-          <div class="opacity-70 text-sm text-black">{{ 'home.noPokemonCaught' | translate }}</div>
+          <div class="text-center text-gray-500 py-8">
+            <p class="text-sm">{{ 'home.noPokemonCaught' | translate }}</p>
+          </div>
           } }
-        </div>
-      </div>
+        </ng-template>
+      </p-card>
+
       <div class="flex justify-end mt-2">
-        <a class="link link-primary text-sm">{{ 'home.viewAll' | translate }}</a>
+        <p-button
+          label="{{ 'home.viewAll' | translate }}"
+          [text]="true"
+          size="small"
+          styleClass="text-blue-600"
+        ></p-button>
       </div>
     </div>
 
     <!-- Recomendados -->
     <div>
-      <div class="card bg-white border border-gray-200">
-        <div class="card-body">
-          <div class="flex justify-between items-center mb-4">
-            <h2 class="font-bold text-lg text-black">{{ 'home.recommended' | translate }}</h2>
-            <button
-              class="btn btn-sm btn-primary"
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="px-6 py-4 border-b flex justify-between items-center">
+            <h2 class="font-bold text-lg text-gray-800">{{ 'home.recommended' | translate }}</h2>
+            <p-button
+              [label]="'home.refresh' | translate"
+              icon="pi pi-refresh"
+              size="small"
+              [loading]="isLoadingRecommendations"
               (click)="refreshRecommendations()"
-              [disabled]="isLoadingRecommendations"
-            >
-              @if (isLoadingRecommendations) {
-              <span class="loading loading-spinner loading-xs"></span>
-              } @else {
-              {{ 'home.refresh' | translate }}
-              }
-            </button>
+            ></p-button>
           </div>
+        </ng-template>
 
+        <ng-template pTemplate="content">
           @if (isLoadingRecommendations) {
           <div class="flex items-center justify-center py-8">
-            <div class="text-center space-y-2">
-              <span class="loading loading-spinner loading-md text-primary"></span>
+            <div class="text-center space-y-4">
+              <p-progressSpinner
+                styleClass="w-12 h-12"
+                strokeWidth="4"
+                fill="transparent"
+                animationDuration="1s"
+              >
+              </p-progressSpinner>
               <p class="text-sm text-gray-500">{{ 'home.loadingRecommendations' | translate }}</p>
             </div>
           </div>
@@ -132,12 +168,20 @@
             }
           </div>
           } @else {
-          <div class="opacity-70 text-sm">{{ 'home.noData' | translate }}</div>
+          <div class="text-center text-gray-500 py-8">
+            <p class="text-sm">{{ 'home.noData' | translate }}</p>
+          </div>
           } }
-        </div>
-      </div>
+        </ng-template>
+      </p-card>
+
       <div class="flex justify-end mt-2">
-        <a class="link link-primary text-sm">{{ 'home.viewAll' | translate }}</a>
+        <p-button
+          label="{{ 'home.viewAll' | translate }}"
+          [text]="true"
+          size="small"
+          styleClass="text-blue-600"
+        ></p-button>
       </div>
     </div>
   </div>
