@@ -2,28 +2,28 @@
 @source "./public/*.{html,js}";
 @plugin "daisyui";
 @plugin "daisyui/theme" {
-  name: "poketheme";
+  name: 'poketheme';
   default: true;
   prefersdark: false;
   color-scheme: light;
 
   --color-base-100: #fff;
   --color-base-content: #000;
-  --color-primary: #412AD5;
+  --color-primary: #412ad5;
   --color-primary-content: #fff;
   --color-secondary: #0e0e0e;
   --color-secondary-content: #fff;
-  --color-accent: #FBBF24;
+  --color-accent: #fbbf24;
   --color-accent-content: #000;
-  --color-neutral: #7C7C7C;
+  --color-neutral: #7c7c7c;
   --color-neutral-content: #fff;
-  --color-info: #3B82F6;
+  --color-info: #3b82f6;
   --color-info-content: #fff;
-  --color-success: #4CAF50;
+  --color-success: #4caf50;
   --color-success-content: #fff;
-  --color-warning: #FBBF24;
+  --color-warning: #fbbf24;
   --color-warning-content: #000;
-  --color-error: #EF4444;
+  --color-error: #ef4444;
   --color-error-content: #fff;
 
   /* border radius */
@@ -41,4 +41,16 @@
   /* effects */
   --depth: 1;
   --noise: 0;
+}
+
+.p-menubar-item-label {
+  color: white !important;
+}
+
+.p-menubar-item-label:hover {
+  color: black !important;
+}
+
+span.p-button-icon {
+  color: white !important;
 }

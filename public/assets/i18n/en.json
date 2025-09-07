@@ -8,7 +8,7 @@
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Logout",
-    "language": "English 🇺🇸"
+    "language": "Language"
   },
   "home": {
     "welcome": "Welcome, Ash Ketchum!",
@@ -52,13 +52,16 @@
     "sortBy": "Sort by",
     "filter": {
       "search": "Search Pokémon...",
+      "searchPlaceholder": "Search Pokémon...",
       "pokemonType": "Pokémon Type",
+      "type": "Type",
       "allTypes": "All types",
       "region": "Region",
       "allRegions": "All regions",
       "generation": "Generation",
       "allGenerations": "All generations",
-      "apply": "Apply"
+      "apply": "Apply",
+      "clearAll": "Clear filters"
     },
     "sort": {
       "captureDate": "Capture date",

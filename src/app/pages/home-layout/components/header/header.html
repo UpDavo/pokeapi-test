@@ -18,7 +18,12 @@
             #languageBtn
             (click)="languageMenu.toggle($event)"
           ></p-button>
-          <p-menu #languageMenu [popup]="true" [model]="languageMenuItems"></p-menu>
+          <p-menu
+            #languageMenu
+            [popup]="true"
+            [model]="languageMenuItems"
+            [appendTo]="'body'"
+          ></p-menu>
 
           <!-- Avatar con menú -->
           <p-avatar
@@ -29,7 +34,7 @@
             #userBtn
             (click)="userMenu.toggle($event)"
           ></p-avatar>
-          <p-menu #userMenu [popup]="true" [model]="userMenuItems"></p-menu>
+          <p-menu #userMenu [popup]="true" [model]="userMenuItems" [appendTo]="'body'"></p-menu>
         </div>
       </ng-template>
     </p-menubar>
@@ -57,7 +62,7 @@
       #userBtnMobile
       (click)="userMenuMobile.toggle($event)"
     ></p-avatar>
-    <p-menu #userMenuMobile [popup]="true" [model]="userMenuItems"></p-menu>
+    <p-menu #userMenuMobile [popup]="true" [model]="userMenuItems" [appendTo]="'body'"></p-menu>
   </div>
 </div>
 

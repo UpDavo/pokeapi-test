@@ -8,7 +8,7 @@
     "profile": "Perfil",
     "settings": "Configuración",
     "logout": "Salir",
-    "language": "Español 🇪🇸"
+    "language": "Idioma"
   },
   "home": {
     "welcome": "¡Bienvenido, Ash Ketchum!",
@@ -52,13 +52,16 @@
     "sortBy": "Ordenar por",
     "filter": {
       "search": "Buscar Pokémon...",
+      "searchPlaceholder": "Buscar Pokémon...",
       "pokemonType": "Tipo de Pokémon",
+      "type": "Tipo",
       "allTypes": "Todos los tipos",
       "region": "Región",
       "allRegions": "Todas las regiones",
       "generation": "Generación",
       "allGenerations": "Todas las generaciones",
-      "apply": "Aplicar"
+      "apply": "Aplicar",
+      "clearAll": "Limpiar filtros"
     },
     "sort": {
       "captureDate": "Fecha de captura",

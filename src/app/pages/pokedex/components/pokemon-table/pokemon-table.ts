@@ -30,6 +30,17 @@ import { FilterOptions } from '../pokemon-filter/pokemon-filter';
 // Components
 import { PokemonFilter } from '../pokemon-filter/pokemon-filter';
 
+// Utils
+import {
+  getPokemonTypeColor,
+  getPokemonTypeLabel,
+  getPokemonStatValue,
+  getPokemonLevel,
+  generateRandomLevel,
+  getPokemonGeneration,
+  getPokemonRegion,
+} from '../../../../utils/uiUtils';
+
 @Component({
   selector: 'app-pokemon-table',
   imports: [
@@ -82,28 +93,6 @@ export class PokemonTable implements OnInit, OnDestroy {
   // Paginación
   pageSize = 25;
   currentPage = 1;
-
-  // Colores de tipos Pokémon
-  private readonly typeColors: Record<string, string> = {
-    normal: '#A8A878',
-    fighting: '#C03028',
-    flying: '#A890F0',
-    poison: '#A040A0',
-    ground: '#E0C068',
-    rock: '#B8A038',
-    bug: '#A8B820',
-    ghost: '#705898',
-    steel: '#B8B8D0',
-    fire: '#F08030',
-    water: '#6890F0',
-    grass: '#78C850',
-    electric: '#F8D030',
-    psychic: '#F85888',
-    ice: '#98D8D8',
-    dragon: '#7038F8',
-    dark: '#705848',
-    fairy: '#EE99AC',
-  };
 
   ngOnInit(): void {
     this.loadAllPokemon();
@@ -165,7 +154,7 @@ export class PokemonTable implements OnInit, OnDestroy {
           (pokemon) =>
             ({
               ...pokemon,
-              level: this.generateRandomLevel(),
+              level: generateRandomLevel(),
             } as PokeApiPokemonDetail & { level: number })
         );
 
@@ -189,34 +178,7 @@ export class PokemonTable implements OnInit, OnDestroy {
     });
   }
 
-  private generateRandomLevel(): number {
-    return Math.floor(Math.random() * 100) + 1;
-  }
-
-  // Métodos auxiliares para generación y región
-  private getPokemonGeneration(id: number): string {
-    if (id >= 1 && id <= 151) return '1';
-    if (id >= 152 && id <= 251) return '2';
-    if (id >= 252 && id <= 386) return '3';
-    if (id >= 387 && id <= 493) return '4';
-    if (id >= 494 && id <= 649) return '5';
-    if (id >= 650 && id <= 721) return '6';
-    if (id >= 722 && id <= 809) return '7';
-    if (id >= 810 && id <= 905) return '8';
-    return '1'; // Por defecto
-  }
-
-  private getPokemonRegion(id: number): string {
-    if (id >= 1 && id <= 151) return 'kanto';
-    if (id >= 152 && id <= 251) return 'johto';
-    if (id >= 252 && id <= 386) return 'hoenn';
-    if (id >= 387 && id <= 493) return 'sinnoh';
-    if (id >= 494 && id <= 649) return 'unova';
-    if (id >= 650 && id <= 721) return 'kalos';
-    if (id >= 722 && id <= 809) return 'alola';
-    if (id >= 810 && id <= 905) return 'galar';
-    return 'kanto'; // Por defecto
-  }
+  // Métodos auxiliares para generación y región - Movidos a uiUtils.ts
 
   // Filtrado y ordenamiento
   onFilterChange(filters: FilterOptions): void {
@@ -293,7 +255,7 @@ export class PokemonTable implements OnInit, OnDestroy {
 
       // Filtro por generaciones - simplificado
       if (filters.generations.length > 0) {
-        const generation = this.getPokemonGeneration(p.id);
+        const generation = getPokemonGeneration(p.id);
         if (!filters.generations.includes(generation)) {
           return false;
         }
@@ -301,7 +263,7 @@ export class PokemonTable implements OnInit, OnDestroy {
 
       // Filtro por regiones - simplificado
       if (filters.regions.length > 0) {
-        const region = this.getPokemonRegion(p.id);
+        const region = getPokemonRegion(p.id);
         if (!filters.regions.includes(region)) {
           return false;
         }
@@ -403,24 +365,49 @@ export class PokemonTable implements OnInit, OnDestroy {
     this.selectAll = false;
   }
 
-  // Métodos de UI
+  // Métodos de UI - Usando utilidades centralizadas
   getTypeLabel(type: string): string {
-    return type.charAt(0).toUpperCase() + type.slice(1);
+    return getPokemonTypeLabel(type);
   }
 
   getTypeColor(type: string): string {
-    return this.typeColors[type] || '#68D391';
+    return getPokemonTypeColor(type);
   }
 
   getStatValue(pokemon: PokeApiPokemonDetail, statName: string): number {
-    return pokemon.stats?.find((s) => s.stat.name === statName)?.base_stat || 0;
+    return getPokemonStatValue(pokemon, statName);
   }
 
   getPokemonLevel(pokemon: PokeApiPokemonDetail): number {
-    return (pokemon as any).level || 1;
+    return getPokemonLevel(pokemon);
   }
 
   // Acción de agregar Pokémon
+  addSinglePokemon(pokemon: PokeApiPokemonDetail): void {
+    // Convertir a CapturedPokemon
+    const pokemonToAdd: CapturedPokemon = {
+      id: pokemon.id,
+      name: pokemon.name,
+      level: (pokemon as any).level || generateRandomLevel(),
+      capturedAt: new Date().toISOString(),
+      region: getPokemonRegion(pokemon.id),
+      generation: getPokemonGeneration(pokemon.id),
+      sprite:
+        pokemon.sprites?.other?.['official-artwork']?.front_default ||
+        pokemon.sprites?.front_default ||
+        '',
+      atk: pokemon.stats?.find((s) => s.stat.name === 'attack')?.base_stat || 0,
+      def: pokemon.stats?.find((s) => s.stat.name === 'defense')?.base_stat || 0,
+      spd: pokemon.stats?.find((s) => s.stat.name === 'speed')?.base_stat || 0,
+      types: pokemon.types?.map((t) => t.type.name) || [],
+      baseExperience: pokemon.base_experience || 0,
+    };
+
+    this.pokemonAdded.emit([pokemonToAdd]);
+
+    console.log(`Agregado Pokémon: ${pokemonToAdd.name}`);
+  }
+
   addSelectedPokemon(): void {
     if (this.selectedPokemon.length === 0) return;
 
@@ -428,10 +415,10 @@ export class PokemonTable implements OnInit, OnDestroy {
     const pokemonToAdd: CapturedPokemon[] = this.selectedPokemon.map((pokemon) => ({
       id: pokemon.id,
       name: pokemon.name,
-      level: (pokemon as any).level || this.generateRandomLevel(),
+      level: (pokemon as any).level || generateRandomLevel(),
       capturedAt: new Date().toISOString(),
-      region: this.getPokemonRegion(pokemon.id),
-      generation: this.getPokemonGeneration(pokemon.id),
+      region: getPokemonRegion(pokemon.id),
+      generation: getPokemonGeneration(pokemon.id),
       sprite:
         pokemon.sprites?.other?.['official-artwork']?.front_default ||
         pokemon.sprites?.front_default ||

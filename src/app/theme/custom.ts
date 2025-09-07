@@ -22,7 +22,7 @@ const Custom = definePreset(Aura, {
       colorScheme: {
         light: {
           root: {
-            background: '{stone.900}',
+            background: '{white.0}',
             color: '{surface.0}',
           },
           subtitle: {

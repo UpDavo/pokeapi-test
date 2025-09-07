@@ -21,15 +21,15 @@ interface MenuItem {
   selector: 'app-header',
   templateUrl: './header.html',
   imports: [
-    RouterLink, 
-    // RouterLinkActive, 
-    TranslateModule, 
-    MenubarModule, 
-    ButtonModule, 
-    MenuModule, 
-    AvatarModule, 
-    OverlayModule, 
-    DrawerModule
+    RouterLink,
+    // RouterLinkActive,
+    TranslateModule,
+    MenubarModule,
+    ButtonModule,
+    MenuModule,
+    AvatarModule,
+    OverlayModule,
+    DrawerModule,
   ],
   standalone: true,
 })
@@ -49,9 +49,12 @@ export class Header {
   sidebarVisible = false;
 
   constructor(private auth: Auth, private router: Router, private translate: TranslateService) {
+    // Obtener idioma guardado o usar español por defecto
+    this.currentLang = localStorage.getItem('language') || 'es';
+    this.translate.setDefaultLang(this.currentLang);
     this.translate.use(this.currentLang);
     this.setupMenus();
-    
+
     // Suscribirse a cambios de idioma para actualizar los menús
     this.translate.onLangChange.subscribe(() => {
       this.setupMenus();
@@ -64,56 +67,58 @@ export class Header {
       {
         label: this.translate.instant('menu.home'),
         routerLink: '/',
-        styleClass: 'text-white hover:bg-gray-700'
+        styleClass: 'text-white hover:bg-gray-700',
       },
       {
         label: this.translate.instant('menu.pokedex'),
         routerLink: '/pokedex',
-        styleClass: 'text-white hover:bg-gray-700'
+        styleClass: 'text-white hover:bg-gray-700',
       },
-      {
-        label: this.translate.instant('menu.teams'),
-        routerLink: '/team',
-        styleClass: 'text-white hover:bg-gray-700'
-      }
+      // {
+      //   label: this.translate.instant('menu.teams'),
+      //   routerLink: '/team',
+      //   styleClass: 'text-white hover:bg-gray-700'
+      // }
     ];
 
     // Menú de usuario
     this.userMenuItems = [
       {
         label: this.translate.instant('menu.profile'),
-        icon: 'pi pi-user'
+        icon: 'pi pi-user',
       },
       {
         label: this.translate.instant('menu.settings'),
-        icon: 'pi pi-cog'
+        icon: 'pi pi-cog',
       },
       {
-        separator: true
+        separator: true,
       },
       {
         label: this.translate.instant('menu.logout'),
         icon: 'pi pi-sign-out',
-        command: () => this.logout()
-      }
+        command: () => this.logout(),
+      },
     ];
 
     // Menú de idiomas
     this.languageMenuItems = [
       {
         label: 'Español 🇪🇸',
-        command: () => this.switchLang('es')
+        command: () => this.switchLang('es'),
       },
       {
         label: 'English 🇺🇸',
-        command: () => this.switchLang('en')
-      }
+        command: () => this.switchLang('en'),
+      },
     ];
   }
 
   switchLang(lang: string) {
     this.currentLang = lang;
     this.translate.use(lang);
+    // Guardar idioma en localStorage
+    localStorage.setItem('language', lang);
     // setupMenus() se llamará automáticamente por la suscripción onLangChange
   }
 

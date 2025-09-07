@@ -21,7 +21,7 @@
             fill="transparent"
             animationDuration="1s"
           ></p-progressSpinner>
-          <p class="text-gray-500 text-sm">{{ 'pokedex.loading.description' | translate }}</p>
+          <p class="text-gray-500 text-sm">Cargando Pokémon...</p>
         </div>
       </div>
       } @else if (hasNoResults) {
@@ -32,13 +32,11 @@
         >
           <span class="text-2xl">🔍</span>
         </div>
-        <h3 class="font-semibold text-gray-900 mb-2">
-          {{ 'pokedex.noResults.title' | translate }}
-        </h3>
-        <p class="text-gray-500 text-sm">{{ 'pokedex.noResults.description' | translate }}</p>
+        <h3 class="font-semibold text-gray-900 mb-2">No se encontraron resultados</h3>
+        <p class="text-gray-500 text-sm">Intenta ajustar tus filtros para encontrar Pokémon</p>
         @if (hasActiveFilters) {
         <p-button
-          [label]="'pokedex.noResults.clearFilters' | translate"
+          label="Limpiar filtros"
           [outlined]="true"
           size="small"
           (click)="onClearFilters()"
@@ -60,62 +58,42 @@
           [sortOrder]="sortOrder === 'asc' ? 1 : -1"
           (onSort)="onSortChange($event)"
           [showCurrentPageReport]="true"
-          currentPageReportTemplate="{{
-            'pokedex.pagination.showing' | translate
-          }} {first} - {last} {{ 'pokedex.pagination.of' | translate }} {totalRecords}"
+          currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
           [rowsPerPageOptions]="[10, 25, 50]"
           styleClass="p-datatable-sm"
         >
           <!-- Encabezados -->
           <ng-template pTemplate="header">
             <tr>
-              <th style="width: 3rem">
-                <p-checkbox
-                  [binary]="true"
-                  [(ngModel)]="selectAll"
-                  (onChange)="onSelectAllChange($event)"
-                ></p-checkbox>
-              </th>
-              <th style="width: 4rem">{{ 'pokemon.image' | translate }}</th>
+              <th style="width: 4rem">Imagen</th>
               <th pSortableColumn="name">
-                {{ 'pokemon.name' | translate }}
+                Nombre
                 <p-sortIcon field="name"></p-sortIcon>
               </th>
+              <th style="width: 8rem">Tipo</th>
               <th pSortableColumn="level" style="width: 6rem">
-                {{ 'pokemon.level' | translate }}
+                Nivel
                 <p-sortIcon field="level"></p-sortIcon>
               </th>
               <th pSortableColumn="stats.attack" style="width: 6rem">
-                {{ 'pokemon.attack' | translate }}
+                Ataque
                 <p-sortIcon field="stats.attack"></p-sortIcon>
               </th>
               <th pSortableColumn="stats.defense" style="width: 6rem">
-                {{ 'pokemon.defense' | translate }}
+                Defensa
                 <p-sortIcon field="stats.defense"></p-sortIcon>
               </th>
               <th pSortableColumn="stats.speed" style="width: 6rem">
-                {{ 'pokemon.speed' | translate }}
+                Velocidad
                 <p-sortIcon field="stats.speed"></p-sortIcon>
               </th>
-              <th style="width: 8rem">{{ 'pokemon.types' | translate }}</th>
-              <th style="width: 6rem">{{ 'pokemon.status' | translate }}</th>
+              <th style="width: 8rem">Acciones</th>
             </tr>
           </ng-template>
 
           <!-- Filas de datos -->
           <ng-template pTemplate="body" let-pokemon let-rowIndex="rowIndex">
             <tr>
-              <!-- Checkbox de selección -->
-              <td>
-                @if (!isPokemonCaptured(pokemon.id)) {
-                <p-checkbox
-                  [binary]="true"
-                  [ngModel]="isSelected(pokemon.id)"
-                  (onChange)="onRowSelect(pokemon, $event)"
-                ></p-checkbox>
-                }
-              </td>
-
               <!-- Imagen -->
               <td>
                 <img
@@ -129,6 +107,19 @@
               <!-- Nombre -->
               <td>
                 <div class="font-medium text-gray-900 capitalize">{{ pokemon.name }}</div>
+              </td>
+
+              <!-- Tipos -->
+              <td>
+                <div class="flex flex-wrap gap-1">
+                  @for (type of pokemon.types; track type.type.name) {
+                  <p-tag
+                    [value]="getTypeLabel(type.type.name)"
+                    [style]="{ 'background-color': getTypeColor(type.type.name), color: 'white' }"
+                    styleClass="text-xs"
+                  ></p-tag>
+                  }
+                </div>
               </td>
 
               <!-- Nivel -->
@@ -155,33 +146,18 @@
                 <span class="font-mono text-sm">{{ getStatValue(pokemon, 'speed') }}</span>
               </td>
 
-              <!-- Tipos -->
-              <td>
-                <div class="flex flex-wrap gap-1">
-                  @for (type of pokemon.types; track type.type.name) {
-                  <p-tag
-                    [value]="getTypeLabel(type.type.name)"
-                    [style]="{ 'background-color': getTypeColor(type.type.name), color: 'white' }"
-                    styleClass="text-xs"
-                  ></p-tag>
-                  }
-                </div>
-              </td>
-
-              <!-- Estado -->
+              <!-- Acciones -->
               <td>
                 @if (isPokemonCaptured(pokemon.id)) {
-                <p-tag
-                  [value]="'pokemon.captured' | translate"
-                  severity="success"
-                  styleClass="text-xs"
-                ></p-tag>
+                <p-tag value="Capturado" severity="success" styleClass="text-xs"></p-tag>
                 } @else {
-                <p-tag
-                  [value]="'pokemon.available' | translate"
-                  severity="warning"
-                  styleClass="text-xs"
-                ></p-tag>
+                <p-button
+                  label="Agregar"
+                  icon="pi pi-plus"
+                  size="small"
+                  (click)="addSinglePokemon(pokemon)"
+                  styleClass="p-button-success p-button-text p-button-sm"
+                ></p-button>
                 }
               </td>
             </tr>
@@ -190,10 +166,8 @@
           <!-- Estado vacío -->
           <ng-template pTemplate="emptymessage">
             <tr>
-              <td colspan="9" class="text-center py-8">
-                <div class="text-gray-500">
-                  {{ 'pokedex.noResults.title' | translate }}
-                </div>
+              <td colspan="8" class="text-center py-8">
+                <div class="text-gray-500">No se encontraron resultados</div>
               </td>
             </tr>
           </ng-template>
@@ -202,20 +176,4 @@
       }
     </ng-template>
   </p-card>
-
-  <!-- Botones de acción -->
-  @if (!isLoading && selectedPokemon.length > 0) {
-  <div class="flex justify-end items-center gap-4 p-4 bg-gray-50 rounded-lg">
-    <span class="text-sm text-gray-600">
-      {{ selectedPokemon.length }} {{ 'pokemon.selected' | translate }}
-    </span>
-    <p-button
-      [label]="'pokemon.addSelected' | translate"
-      icon="pi pi-plus"
-      (click)="addSelectedPokemon()"
-      [disabled]="selectedPokemon.length === 0"
-      styleClass="p-button-success"
-    ></p-button>
-  </div>
-  }
 </div>

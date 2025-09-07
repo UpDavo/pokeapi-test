@@ -7,6 +7,9 @@ import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { MessageModule } from 'primeng/message';
 
+// Utils
+import { POKEMON_TYPES, POKEMON_REGIONS, POKEMON_GENERATIONS } from '../../../../utils/uiUtils';
+
 export interface FilterOptions {
   search: string;
   types: string[];
@@ -45,30 +48,10 @@ export class PokemonFilter {
   showError = false;
 
   // Opciones disponibles
-  pokemonTypes = [
-    'normal',
-    'fighting',
-    'flying',
-    'poison',
-    'ground',
-    'rock',
-    'bug',
-    'ghost',
-    'steel',
-    'fire',
-    'water',
-    'grass',
-    'electric',
-    'psychic',
-    'ice',
-    'dragon',
-    'dark',
-    'fairy',
-  ];
-
-  pokemonRegions = ['kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar'];
-
-  pokemonGenerations = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
+  // Opciones disponibles - Usando constantes centralizadas
+  pokemonTypes = POKEMON_TYPES;
+  pokemonRegions = POKEMON_REGIONS;
+  pokemonGenerations = POKEMON_GENERATIONS;
 
   onSearchChange(): void {
     try {
