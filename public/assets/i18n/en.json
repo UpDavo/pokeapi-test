@@ -66,10 +66,10 @@
     "sort": {
       "captureDate": "Capture date",
       "name": "Name",
-      "level": "Level",
-      "attack": "Attack",
-      "defense": "Defense",
-      "speed": "Speed",
+      "level": "LVL",
+      "attack": "ATK",
+      "defense": "DEF",
+      "speed": "VEL",
       "ascending": "Ascending",
       "descending": "Descending"
     },
@@ -79,7 +79,9 @@
       "attack": "ATK",
       "defense": "DEF",
       "speed": "SPD",
-      "types": "Types:"
+      "types": "Types:",
+      "captured": "Captured",
+      "exp": "EXP"
     },
     "loading": {
       "title": "Loading Pokédex...",

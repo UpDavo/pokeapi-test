@@ -8,11 +8,7 @@
         <p class="text-sm text-gray-500">#{{ pokemon.id.toString().padStart(3, '0') }}</p>
       </div>
       @if (showLevel && pokemon.level) {
-      <p-badge 
-        [value]="'Niv ' + pokemon.level" 
-        severity="info"
-        styleClass="text-xs"
-      ></p-badge>
+      <p-badge [value]="'Niv ' + pokemon.level" severity="info" styleClass="text-xs"></p-badge>
       }
     </div>
 
@@ -88,7 +84,7 @@
       ></p-tag>
       } @if (pokemon.generation) {
       <p-tag
-        [value]="('pokedex.card.gen' | translate) + ' ' + pokemon.generation"
+        [value]="'GEN ' + pokemon.generation"
         severity="secondary"
         styleClass="text-xs"
       ></p-tag>

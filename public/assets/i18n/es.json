@@ -66,10 +66,10 @@
     "sort": {
       "captureDate": "Fecha de captura",
       "name": "Nombre",
-      "level": "Nivel",
-      "attack": "Ataque",
-      "defense": "Defensa",
-      "speed": "Velocidad",
+      "level": "LVL",
+      "attack": "ATK",
+      "defense": "DEF",
+      "speed": "VEL",
       "ascending": "Ascendente",
       "descending": "Descendente"
     },
@@ -79,7 +79,9 @@
       "attack": "ATK",
       "defense": "DEF",
       "speed": "SPD",
-      "types": "Tipos:"
+      "types": "Tipos:",
+      "captured": "Capturado",
+      "exp": "EXP"
     },
     "loading": {
       "title": "Cargando Pokédex...",
