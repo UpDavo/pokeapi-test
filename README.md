@@ -167,31 +167,3 @@ export const mock = {
 };
 ```
 
-### Configuración de API
-La aplicación utiliza la PokéAPI pública:
-- Base URL: `https://pokeapi.co/api/v2`
-- Sin autenticación requerida
-- Rate limiting considerado
-
-## 🤝 Contribución
-
-1. Fork el proyecto
-2. Crea una rama feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## 📄 Licencia
-
-Este proyecto es privado y pertenece a [@UpDavo](https://github.com/UpDavo).
-
-## 🙏 Reconocimientos
-
-- [PokéAPI](https://pokeapi.co/) - API de datos Pokémon
-- [Angular Team](https://angular.io/) - Framework
-- [PrimeNG](https://primeng.org/) - Componentes UI
-- [Tailwind CSS](https://tailwindcss.com/) - Framework de estilos
-
----
-
-Desarrollado con ❤️ por [@UpDavo](https://github.com/UpDavo)
