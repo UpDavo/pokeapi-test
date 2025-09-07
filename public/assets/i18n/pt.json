@@ -1,0 +1,155 @@
+{
+  "menu": {
+    "home": "Início",
+    "pokedex": "Pokédex",
+    "teams": "Minhas Equipes",
+    "teamList": "Equipes",
+    "newTeam": "Nova Equipe",
+    "profile": "Perfil",
+    "settings": "Configurações",
+    "logout": "Sair",
+    "language": "Idioma"
+  },
+  "home": {
+    "welcome": "Bem-vindo, Ash Ketchum!",
+    "summary": "Resumo",
+    "pokemonCaught": "Pokémon Capturados",
+    "pokedex": "Pokédex",
+    "averageLevel": "Nível Médio",
+    "favoriteType": "Tipo Favorito",
+    "experience": "Experiência",
+    "strongestPokemon": "Pokémon Mais Forte",
+    "myPokemons": "Meus Pokémon",
+    "recommended": "Recomendados",
+    "viewAll": "Ver Todos",
+    "refresh": "Atualizar",
+    "available": "disponível",
+    "progress": "progresso",
+    "collection": "da coleção",
+    "mostCollected": "mais coletado",
+    "accumulatedPoints": "pontos acumulados",
+    "totalPower": "poder total",
+    "noData": "Sem dados",
+    "none": "Nenhum",
+    "noPokemonCaught": "Nenhum Pokémon capturado ainda.",
+    "loadingMetrics": "Carregando métricas...",
+    "loadingPokemon": "Carregando Pokémon...",
+    "loadingRecommendations": "Carregando recomendações...",
+    "of": "de",
+    "regionLabel": "Região:",
+    "generationLabel": "Ger:",
+    "experienceLabel": "Exp",
+    "powerLabel": "Poder",
+    "numberLabel": "#"
+  },
+  "pokedex": {
+    "title": "Pokédex",
+    "description": "Aqui você pode ver todos os Pokémon que capturou",
+    "add_new": "Adicionar Pokémon",
+    "captureModal": {
+      "title": "Adicionar Pokémon à Pokédex"
+    },
+    "sortBy": "Ordenar por",
+    "filter": {
+      "search": "Buscar Pokémon...",
+      "searchPlaceholder": "Buscar Pokémon...",
+      "pokemonType": "Tipo de Pokémon",
+      "type": "Tipo",
+      "allTypes": "Todos os tipos",
+      "region": "Região",
+      "allRegions": "Todas as regiões",
+      "generation": "Geração",
+      "allGenerations": "Todas as gerações",
+      "apply": "Aplicar",
+      "clearAll": "Limpar filtros"
+    },
+    "sort": {
+      "captureDate": "Data de captura",
+      "name": "Nome",
+      "level": "LVL",
+      "attack": "ATQ",
+      "defense": "DEF",
+      "speed": "VEL",
+      "ascending": "Crescente",
+      "descending": "Decrescente"
+    },
+    "card": {
+      "level": "Nvl.",
+      "noImage": "Sem imagem",
+      "attack": "ATQ",
+      "defense": "DEF",
+      "speed": "VEL",
+      "types": "Tipos:",
+      "captured": "Capturado",
+      "exp": "EXP"
+    },
+    "loading": {
+      "title": "Carregando Pokédex...",
+      "description": "Preparando seus Pokémon capturados"
+    },
+    "empty": {
+      "title": "Sua Pokédex está vazia",
+      "description": "Vá explorar e capture alguns Pokémon!"
+    },
+    "noResults": {
+      "title": "Nenhum Pokémon encontrado com estes critérios",
+      "description": "Tente mudar os filtros para encontrar mais Pokémon",
+      "clearFilters": "Limpar filtros"
+    },
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Próximo",
+      "showing": "Mostrando",
+      "of": "de"
+    },
+    "pokemon": {
+      "image": "Imagem",
+      "name": "Nome",
+      "level": "Nível",
+      "attack": "Ataque",
+      "defense": "Defesa",
+      "speed": "Velocidade",
+      "types": "Tipos",
+      "status": "Status",
+      "captured": "Capturado",
+      "available": "Disponível",
+      "selected": "selecionado",
+      "addSelected": "Adicionar selecionados"
+    },
+    "types": {
+      "normal": "Normal",
+      "fighting": "Lutador",
+      "flying": "Voador",
+      "poison": "Venenoso",
+      "ground": "Terrestre",
+      "rock": "Pedra",
+      "bug": "Inseto",
+      "ghost": "Fantasma",
+      "steel": "Aço",
+      "fire": "Fogo",
+      "water": "Água",
+      "grass": "Planta",
+      "electric": "Elétrico",
+      "psychic": "Psíquico",
+      "ice": "Gelo",
+      "dragon": "Dragão",
+      "dark": "Sombrio",
+      "fairy": "Fada"
+    },
+    "regions": {
+      "kanto": "Kanto",
+      "johto": "Johto",
+      "hoenn": "Hoenn",
+      "sinnoh": "Sinnoh",
+      "unova": "Unova",
+      "kalos": "Kalos",
+      "alola": "Alola",
+      "galar": "Galar"
+    }
+  },
+  "common": {
+    "cancel": "Cancelar",
+    "accept": "Aceitar",
+    "save": "Salvar"
+  }
+}

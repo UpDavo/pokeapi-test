@@ -111,6 +111,10 @@ export class Header {
         label: 'English 🇺🇸',
         command: () => this.switchLang('en'),
       },
+      {
+        label: 'Português 🇧🇷',
+        command: () => this.switchLang('pt'),
+      },
     ];
   }
 
