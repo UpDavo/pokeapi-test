@@ -1,13 +1,21 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocalStorageService {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
+  private get isBrowser() {
+    return isPlatformBrowser(this.platformId);
+  }
   /**
    * Guarda un item en localStorage con manejo de errores
    */
   setItem<T>(key: string, value: T): boolean {
+    if (!this.isBrowser) return false;
+
     try {
       const serializedValue = JSON.stringify(value);
       localStorage.setItem(key, serializedValue);
@@ -22,6 +30,8 @@ export class LocalStorageService {
    * Obtiene un item de localStorage con manejo de errores y valor por defecto
    */
   getItem<T>(key: string, defaultValue: T): T {
+    if (!this.isBrowser) return defaultValue;
+
     try {
       const item = localStorage.getItem(key);
       if (item === null) {
@@ -38,6 +48,8 @@ export class LocalStorageService {
    * Elimina un item del localStorage
    */
   removeItem(key: string): boolean {
+    if (!this.isBrowser) return false;
+
     try {
       localStorage.removeItem(key);
       return true;
@@ -51,6 +63,8 @@ export class LocalStorageService {
    * Verifica si localStorage está disponible
    */
   isAvailable(): boolean {
+    if (!this.isBrowser) return false;
+
     try {
       const testKey = '__localStorage_test__';
       localStorage.setItem(testKey, 'test');
@@ -65,6 +79,8 @@ export class LocalStorageService {
    * Obtiene el uso actual del localStorage en bytes (aproximado)
    */
   getStorageUsage(): number {
+    if (!this.isBrowser) return 0;
+
     let total = 0;
     try {
       for (const key in localStorage) {
@@ -85,6 +101,8 @@ export class LocalStorageService {
    * Limpia items expirados basados en un timestamp
    */
   cleanExpiredItems(prefix: string, maxAge: number): void {
+    if (!this.isBrowser) return;
+
     const now = Date.now();
     const keysToRemove: string[] = [];
 
@@ -117,6 +135,8 @@ export class LocalStorageService {
    * Obtiene todas las claves que coinciden con un prefijo
    */
   getKeysByPrefix(prefix: string): string[] {
+    if (!this.isBrowser) return [];
+
     const keys: string[] = [];
     try {
       for (let i = 0; i < localStorage.length; i++) {
@@ -135,6 +155,8 @@ export class LocalStorageService {
    * Limpia completamente el localStorage
    */
   clear(): boolean {
+    if (!this.isBrowser) return false;
+
     try {
       localStorage.clear();
       return true;

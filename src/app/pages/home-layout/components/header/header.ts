@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Auth } from '../../../../services/auth.service';
 import { Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { OverlayModule } from 'primeng/overlay';
 import { DrawerModule } from 'primeng/drawer';
 import { MenuItem as PrimeMenuItem } from 'primeng/api';
+import { isPlatformBrowser } from '@angular/common';
 
 interface MenuItem {
   label: string;
@@ -48,9 +49,16 @@ export class Header {
   currentLang = 'es';
   sidebarVisible = false;
 
-  constructor(private auth: Auth, private router: Router, private translate: TranslateService) {
+  constructor(
+    private auth: Auth, 
+    private router: Router, 
+    private translate: TranslateService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     // Obtener idioma guardado o usar español por defecto
-    this.currentLang = localStorage.getItem('language') || 'es';
+    if (isPlatformBrowser(this.platformId)) {
+      this.currentLang = localStorage.getItem('language') || 'es';
+    }
     this.translate.setDefaultLang(this.currentLang);
     this.translate.use(this.currentLang);
     this.setupMenus();
@@ -122,7 +130,9 @@ export class Header {
     this.currentLang = lang;
     this.translate.use(lang);
     // Guardar idioma en localStorage
-    localStorage.setItem('language', lang);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('language', lang);
+    }
     // setupMenus() se llamará automáticamente por la suscripción onLangChange
   }
 
